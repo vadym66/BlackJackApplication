@@ -1,4 +1,4 @@
-﻿namespace BlackJackApp.Entities
+﻿namespace BlackJackApp.Entities.Entities
 {
     public class Round
     {

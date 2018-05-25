@@ -5,32 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities;
+using BlackJackApp.Entities.Entities;
 
 namespace BlackJackApp.Services
 {
-    class PlayerRepository : IPlayerRepository<Player>
+    class RoundRepository : IRoundRepository
     {
-        public void Create()
+        public IEnumerable<Round> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Player GetById(int id)
+        public Round GetById(int id)
         {
             throw new NotImplementedException();
         }
 
         public void Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Player> IPlayerRepository<Player>.GetAll()
         {
             throw new NotImplementedException();
         }

@@ -32,7 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +54,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BlackJackApp.DAL\BlackJackApp.DataAccess.csproj">
+      <Project>{0837a9da-c43a-432c-a85c-3e898171eb0d}</Project>
+      <Name>BlackJackApp.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BlackJackApp.Entities\BlackJackApp.Entities.csproj">
+      <Project>{0C4346C6-F247-4F53-BD37-CBE11EE7E271}</Project>
+      <Name>BlackJackApp.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BlackJackApp.Services\BlackJackApp.Services.csproj">
+      <Project>{3F3921DB-1C9A-45BB-A29A-D52520644311}</Project>
+      <Name>BlackJackApp.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
