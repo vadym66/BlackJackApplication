@@ -10,6 +10,7 @@ namespace BlackJackApp.DataAccess.Interface
 {
     public interface IRoundRepository
     {
+        void Create(Round round);
         IEnumerable<Round> GetAll();
         Round GetById(int id);
         void Save();

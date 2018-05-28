@@ -12,7 +12,7 @@ namespace BlackJackApp.DataAccess.Interface
     {
         IEnumerable<T> GetAll();
         Player GetById(int id);
-        void Create();
+        void Create(Player player);
         void Delete(int id);
         void Save();
     }

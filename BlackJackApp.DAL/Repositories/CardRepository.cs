@@ -15,23 +15,15 @@ namespace BlackJackApp.Services
     public class CardRepository : ICardRepository
     {
         private BlackJackDbContext _db;
-        Random rnd = new Random();
+
 
         public CardRepository()
         {
             _db = new BlackJackDbContext();
         }
 
-        public void Create()
+        public void Create(Card card)
         {
-            var card = new Card();
-
-            //Array cardRank = Enum.GetValues(typeof(CardRank));
-            //card.CardRank = (CardRank)cardRank.GetValue(rnd.Next(cardRank.Length));
-
-            //Array cardSuit = Enum.GetValues(typeof(CardSuit));
-            //card.CardSuit = (CardSuit)cardSuit.GetValue(rnd.Next(cardSuit.Length));
-
             _db.Cards.Add(card);
         }
 

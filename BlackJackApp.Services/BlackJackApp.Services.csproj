@@ -47,11 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Repositories\CardRepository.cs" />
-    <Compile Include="Repositories\GameRepository.cs" />
-    <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Services\CardService.cs" />
+    <Compile Include="Services\GameService.cs" />
+    <Compile Include="Mapping\Mapper.cs" />
+    <Compile Include="Services\PlayerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\RoundRepository.cs" />
+    <Compile Include="Services\RoundService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlackJackApp.DAL\BlackJackApp.DataAccess.csproj">
@@ -67,8 +68,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTO\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

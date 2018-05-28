@@ -12,7 +12,7 @@ namespace BlackJackApp.DataAccess.Interface
     public interface ICardRepository
     {
         IEnumerable<Card> GetAll();
-        void Create();
+        void Create(Card card);
         Card GetCard(int id);
         void Save();
     }

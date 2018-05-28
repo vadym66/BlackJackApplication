@@ -13,22 +13,8 @@ namespace BlackJackApp.Console.Test
     {
         static void Main(string[] args)
         {
-            using (var db = new BlackJackDbContext())
-            {
-                var cr = new CardRepository();
-
-                cr.Create();
-                cr.Save();
-                cr.Create();
-                cr.Save();
-                cr.Create();
-                cr.Save();
-
-                foreach (var item in db.Cards)
-                {
-                    System.Console.WriteLine($"({item.CardRank} : {item.CardSuit}");
-                }
-            }
+                GameService gameService = new GameService();
+                gameService.CreateGame(1);
         }
     }
 }
