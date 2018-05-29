@@ -3,45 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BlackJackApp.DAL.EF;
+using BlackJackApp.DAL.Dapper;
 using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities;
 using BlackJackApp.Entities.Entities;
+using Dapper;
+
 
 namespace BlackJackApp.Services
 {
-    public class PlayerRepository : IPlayerRepository<Player>
+    public class PlayerRepository : IPlayerRepository
     {
-        private BlackJackDbContext _db;
-
-        public PlayerRepository()
+        //insert Player to database
+        public void Add(Player player)
         {
-            _db = new BlackJackDbContext();
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                connection.Execute("INSERT INTO Players(Name) VALUES(@Name)", new { player.Name });
+            }
         }
 
-        public void Create(Player player)
+        public void DeleteAll()
         {
-            _db.Players.Add(player);
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                connection.Execute("DELETE FROM Players");
+            }
         }
 
-        public void Delete(int id)
+        public IEnumerable<Player> GetAll()
         {
-            throw new NotImplementedException();
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Player>("SELECT * FROM Players").ToList();
+            }
         }
 
         public Player GetById(int id)
         {
-            throw new NotImplementedException();
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Player>("SELECT * FROM Players WHERE Id=@id", new { id }).First();
+            }
         }
 
         public void Save()
         {
-            _db.SaveChanges();
-        }
-
-        IEnumerable<Player> IPlayerRepository<Player>.GetAll()
-        {
             throw new NotImplementedException();
         }
     }
+
 }

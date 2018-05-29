@@ -1,7 +1,8 @@
-﻿using BlackJackApp.DAL.EF;
+﻿
 using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.Entities.Enums;
+using BlackJackApp.Services.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,18 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Services
 {
-    public class CardService
+    public class CardService : ICardService
     {
-        private ICardRepository _db;
+        private ICardRepository _cardRepository;
 
-        public CardService()
+        public CardService(ICardRepository cardRepository)
         {
-            _db = new CardRepository();
+            _cardRepository = cardRepository;
         }
 
-        public int CreateCard()
+        public Card GetCard()
         {
-            Card card = new Card();
-            Random rnd = new Random();
-
-            Array cardRank = Enum.GetValues(typeof(CardRank));
-            card.CardRank = (CardRank)cardRank.GetValue(rnd.Next(cardRank.Length));
-
-            Array cardSuit = Enum.GetValues(typeof(CardSuit));
-            card.CardSuit = (CardSuit)cardSuit.GetValue(rnd.Next(cardSuit.Length));
-
-            _db.Create(card);
-            _db.Save();
-
-            return card.Id; 
-        }                
+            return _cardRepository.GetRandom();
+        }
     }
 }

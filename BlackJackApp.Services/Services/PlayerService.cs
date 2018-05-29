@@ -1,5 +1,6 @@
 ﻿using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
+using BlackJackApp.Services.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,49 +9,38 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Services
 {
-    public class PlayerService
+    public class PlayerService : IPlayerService
     {
-        private IPlayerRepository<Player> _db;
-        private List<Player> _playersList;
+        IPlayerRepository _playerRepository;
 
-        public PlayerService()
+        public PlayerService(IPlayerRepository playerRepository)
         {
-            _db = new PlayerRepository();
-            _playersList = new List<Player>();
+            _playerRepository = playerRepository;
         }
 
-        public void CreatePlayer()
+        public PlayerServiceViewModel CreateBot()
         {
-            Player player = new Player();
+            Player playerBot = new Player();
+            _playerRepository.Add(playerBot);
 
-            player.Name = Console.ReadLine();
-            _playersList.Add(player);
-            _db.Create(player);
-            _db.Save();
+            ///PlayerServiceviewModel.MapsFrom(playerBot)
+            return new PlayerServiceViewModel();
+
         }
 
-        public void CreateBot(int numberOfBots)
+        public PlayerServiceViewModel CreateDealer()
         {
-            for (int i = 0; i < numberOfBots; i++)
-            {
-                _playersList.Add(new Player());
-                _db.Create(_playersList[i]);
-                _db.Save();
-            }
+            throw new NotImplementedException();
         }
 
-        public void CreateDelear()
+        public void CreateHumanPlayer(PlayerServiceViewModel player)
         {
-            Player player = new Player();
-
-            _playersList.Add(player);
-            _db.Create(player);
-            _db.Save();
+            throw new NotImplementedException();
         }
 
-        public List<Player> GetAll()
+        public PlayerServiceViewModel TakeCard(CardServiceViewModel card)
         {
-            return _playersList;
+
         }
     }
 }

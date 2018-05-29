@@ -3,35 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BlackJackApp.DAL.EF;
+using BlackJackApp.DAL.Dapper;
 using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities;
 using BlackJackApp.Entities.Entities;
+using Dapper;
 
 namespace BlackJackApp.Services
 {
-    class GameRepository : IGameRepository
+    public class GameRepository : IGameRepository
     {
-        private BlackJackDbContext _db;
-
-        public GameRepository()
+        public void Add(Game game)
         {
-            _db = new BlackJackDbContext();
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                connection.Execute("INSERT INTO Games DEFAULT VALUES");
+            }
+        }
+
+        public void DeleteAll()
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                connection.Execute("DELETE FROM Games");
+            }
         }
 
         public IEnumerable<Game> GetAll()
         {
-            return _db.Games;
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Game>("SELECT * FROM Games").ToList();
+            }
         }
 
         public Game GetById(int id)
         {
-            return _db.Games.Find(id);
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Game>("SELECT * FROM Cards WHERE Id=@id", new { id }).First();
+            }
         }
 
         public void Save()
         {
-            _db.SaveChanges();
+            
         }
     }
 }

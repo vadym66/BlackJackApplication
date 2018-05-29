@@ -8,12 +8,12 @@ using BlackJackApp.Entities.Entities;
 
 namespace BlackJackApp.DataAccess.Interface
 {
-    public interface IPlayerRepository<T> where T : class
+    public interface IPlayerRepository
     {
-        IEnumerable<T> GetAll();
+        IEnumerable<Player> GetAll();
         Player GetById(int id);
-        void Create(Player player);
-        void Delete(int id);
+        void Add(Player player);
         void Save();
+        void DeleteAll();
     }
 }

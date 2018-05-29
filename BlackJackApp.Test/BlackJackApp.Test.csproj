@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3F3921DB-1C9A-45BB-A29A-D52520644311}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlackJackApp.Services</RootNamespace>
-    <AssemblyName>BlackJackApp.Services</AssemblyName>
+    <ProjectGuid>{1FDFC11E-BFE9-4FCA-A7BB-CDDD86625633}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BlackJackApp.Test</RootNamespace>
+    <AssemblyName>BlackJackApp.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,17 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,30 +42,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceInterfaces\ICardService.cs" />
-    <Compile Include="ServiceInterfaces\IGameService.cs" />
-    <Compile Include="ServiceInterfaces\IPlayerService.cs" />
-    <Compile Include="ServiceInterfaces\IRoundService.cs" />
-    <Compile Include="Services\CardService.cs" />
-    <Compile Include="Services\GameService.cs" />
-    <Compile Include="Services\PlayerService.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\RoundService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlackJackApp.DAL\BlackJackApp.DataAccess.csproj">
-      <Project>{0837A9DA-C43A-432C-A85C-3E898171EB0D}</Project>
+      <Project>{0837a9da-c43a-432c-a85c-3e898171eb0d}</Project>
       <Name>BlackJackApp.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\BlackJackApp.Entities\BlackJackApp.Entities.csproj">
       <Project>{0c4346c6-f247-4f53-bd37-cbe11ee7e271}</Project>
       <Name>BlackJackApp.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BlackJackApp.Services\BlackJackApp.Services.csproj">
+      <Project>{3f3921db-1c9a-45bb-a29a-d52520644311}</Project>
+      <Name>BlackJackApp.Services</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

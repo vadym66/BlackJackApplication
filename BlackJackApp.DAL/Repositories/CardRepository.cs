@@ -3,43 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BlackJackApp.DAL.EF;
+using BlackJackApp.DAL.Dapper;
 using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.Entities.Enums;
 using BlackJackApp.Services;
+using Dapper;
 
 namespace BlackJackApp.Services
 {
     public class CardRepository : ICardRepository
     {
-        private BlackJackDbContext _db;
 
-
-        public CardRepository()
+        public Card GetRandom()
         {
-            _db = new BlackJackDbContext();
-        }
-
-        public void Create(Card card)
-        {
-            _db.Cards.Add(card);
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Card>("SELECT TOP 1 * FROM Cards ORDER BY newid()").First();
+            }
         }
 
         public IEnumerable<Card> GetAll()
         {
-            return _db.Cards;
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Card>("SELECT * FROM Cards").ToList();
+            }
         }
 
-        public Card GetCard(int id)
+        public Card GetById(int id)
         {
-            return _db.Cards.Find(id);
-        }
-
-        public void Save()
-        {
-            _db.SaveChanges();
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Card>("SELECT * FROM Cards WHERE Id=@id", new { id }).First();
+            }
         }
     }
 }

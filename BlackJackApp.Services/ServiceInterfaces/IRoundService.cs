@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackApp.Services.Mapping
+namespace BlackJackApp.Services.ServiceInterfaces
 {
-    public class Mapper
+    public interface IRoundService
     {
-        ///My mapping here
     }
 }

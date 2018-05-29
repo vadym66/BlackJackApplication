@@ -9,8 +9,10 @@ namespace BlackJackApp.DataAccess.Interface
 {
     public interface IGameRepository
     {
+        void Add(Game player);
         IEnumerable<Game> GetAll();
         Game GetById(int id);
         void Save();
+        void DeleteAll();
     }
 }
