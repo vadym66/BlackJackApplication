@@ -3,6 +3,7 @@ using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.Entities.Enums;
 using BlackJackApp.Services.ServiceInterfaces;
+using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,6 @@ namespace BlackJackApp.Services
 {
     public class CardService : ICardService
     {
-        private ICardRepository _cardRepository;
-
-        public CardService(ICardRepository cardRepository)
-        {
-            _cardRepository = cardRepository;
-        }
-
-        public Card GetCard()
-        {
-            return _cardRepository.GetRandom();
-        }
+        
     }
 }

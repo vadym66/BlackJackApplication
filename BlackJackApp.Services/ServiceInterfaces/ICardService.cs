@@ -1,4 +1,5 @@
 ﻿using BlackJackApp.Entities.Entities;
+using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace BlackJackApp.Services.ServiceInterfaces
 {
     public interface ICardService
     {
-        Card GetCard();
+        
     }
 }

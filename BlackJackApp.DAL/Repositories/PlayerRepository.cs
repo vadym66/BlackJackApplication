@@ -55,6 +55,14 @@ namespace BlackJackApp.Services
             }
         }
 
+        public IEnumerable<Player> GetSequence(int quantityBot)
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Player>("select TOP 5 * FROM Players ORDER BY Id desc").Take(quantityBot);
+            }
+        }
+
         public void Save()
         {
             throw new NotImplementedException();

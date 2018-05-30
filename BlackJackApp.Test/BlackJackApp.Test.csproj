@@ -63,6 +63,10 @@
       <Project>{3f3921db-1c9a-45bb-a29a-d52520644311}</Project>
       <Name>BlackJackApp.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BlackJackApp.ViewModels\BlackJackApp.ViewModels.csproj">
+      <Project>{C0101599-9B70-4398-B8ED-D37FEBAC0199}</Project>
+      <Name>BlackJackApp.ViewModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

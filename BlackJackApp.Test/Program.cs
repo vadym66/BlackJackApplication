@@ -12,31 +12,43 @@ namespace BlackJackApp.Test
     {
         static void Main(string[] args)
         {
-            GameRepository gameRepository = new GameRepository();
-            PlayerRepository repo = new PlayerRepository();
-            //repo.DeleteAll();
+            var playerRepository = new PlayerRepository();
 
-            //repo.Add(new Player { Name = "Peter" });
-            //repo.Add(new Player { Name = "Peter" });
-            //repo.Add(new Player { Name = "Peter" });
-            //repo.Add(new Player { Name = "Peter" });
+            var players = playerRepository.GetSequence(3);
 
-            //gameRepository.Add(new Game());
+            foreach (var item in players)
+            {
+                Console.WriteLine(item);
+            }
+            //var cardRepository = new CardRepository();
+            //var roundRepository = new RoundRepository();
+            //var gameRepository = new GameRepository();
 
-            //var game = gameRepository.GetLast();
-            //Console.WriteLine(game.Id.ToString());
+            //var gameService = new GameService(gameRepository);
+            //var playerService = new PlayerService(playerRepository);
+            //var roundService = new RoundService(roundRepository, cardRepository, gameRepository);
+            //var cardService = new CardService(cardRepository);
 
-            Game game = new Game();
-            gameRepository.Add(game);
+            //string name = "Sam";
+            //var startGame = gameService.CreateGame(null, name);
 
-            Console.WriteLine(game.Id.ToString());
+            //var human = playerService.CreateHumanPlayer(startGame.PlayerName);
+            //var dealer = playerService.CreateDealer();
+
+            //var createRoundforHuman = roundService.CreateRound(human.PlayerId, startGame.GameId);
+            //var createRoundforHuman1 = roundService.CreateRound(human.PlayerId, startGame.GameId);
+            //Console.WriteLine();
+
+            //var createRoundforDealer = roundService.CreateRound(dealer.PlayerId, startGame.GameId);
+            //var createRoundforDealer2 = roundService.CreateRound(dealer.PlayerId, startGame.GameId);
+
+            //var createRoundforHuman3 = roundService.CreateRound(human.PlayerId, startGame.GameId);
+
+            //var createRoundforDealer3 = roundService.CreateRound(dealer.PlayerId, startGame.GameId);
 
 
-            //gameRepository.Add(new Game());
-            //game = gameRepository.GetLast();
-            ////Console.WriteLine(game.Id.ToString());
-            //gameRepository.DeleteAll();
-
+            //string name = "peter";
+            //playerRepository.Add(new Player {Name = name });
 
         }
     }

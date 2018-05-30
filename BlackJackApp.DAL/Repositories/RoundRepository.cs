@@ -17,15 +17,15 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                connection.Execute("INSERT INTO Round(PlayerId, CardId, Game_id) VALUES(@Name)");
+                connection.Execute("INSERT INTO Round(Player_Id, Card_Id, Game_Id) VALUES(@Name)");
             }
         }
 
-        public void Add(Round round, int game_id)
+        public void Add(Round round, int gameId)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                connection.Execute("INSERT INTO Round(PlayerId, CardId, Game_id) VALUES(@Name)");
+                connection.Execute("INSERT INTO Rounds(Player_Id, Card_Id, Game_Id) VALUES(@PlayerId, @CardId, @gameId)", new {round.PlayerId, round.CardId, gameId });
             }
         }
 

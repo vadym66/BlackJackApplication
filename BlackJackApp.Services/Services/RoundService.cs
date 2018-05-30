@@ -15,32 +15,32 @@ namespace BlackJackApp.Services
         private IRoundRepository _roundRepository;
         private ICardRepository _cardRepository;
         private IGameRepository _gameRepository;
+        private Round _round;
 
-        public RoundService(IRoundRepository roundRepository, ICardRepository cardRepository)
+        public RoundService(IRoundRepository roundRepository, ICardRepository cardRepository, IGameRepository gameRepository)
         {
             _roundRepository = roundRepository;
             _cardRepository = cardRepository;
-        }
-
-        public RoundServiceViewModel CreateFirstRound(int userId, int gameId)
-        {
-            var round = new Round();
-            var card = _cardRepository.GetRandom();
-            
-
-            round.CardId = card.Id;
-            round.PlayerId = userId;
-
-            _roundRepository.Add(round, gameId);
-
-            var roundServiceViewModel = new RoundServiceViewModel();
-
-
+            _gameRepository = gameRepository;
         }
 
         public RoundServiceViewModel CreateRound(int userId, int gameId)
         {
-            throw new Exception();
+            _round = new Round();
+
+            var card = _cardRepository.GetRandom();
+
+            _round.PlayerId = userId;
+            _round.CardId = card.Id;
+
+            _roundRepository.Add(_round, gameId);
+
+            var roundServiceViewModel = new RoundServiceViewModel();
+            roundServiceViewModel.Round = _round.Id;
+            roundServiceViewModel.Card.CardRank = card.CardRank.ToString();
+            roundServiceViewModel.Card.CardSuit = card.CardSuit.ToString();
+
+            return roundServiceViewModel;
         }
     }
 }

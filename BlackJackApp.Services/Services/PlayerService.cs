@@ -64,7 +64,5 @@ namespace BlackJackApp.Services
 
             return playerServiceViewModel;
         }
-
-        
     }
 }

@@ -13,7 +13,7 @@ namespace BlackJackApp.DAL.Dapper
     {
         public static DbConnection GetOpenDbConnection()
         {
-            var connection = new SqlConnection("Data Source=DESKTOP-3M9Q6SI;Initial Catalog=BlackJackDb-ByConnectionString;Integrated Security=True");
+            var connection = new SqlConnection("Data Source=DESKTOP-3M9Q6SI;Initial Catalog=BlackJackDb;Integrated Security=True");
             connection.Open();
 
             return connection;

@@ -13,36 +13,96 @@ namespace BlackJackApp.Services
     public class GameService : IGameService
     {
         private IGameRepository _gameRepository;
+        private IRoundRepository _roundRepository;
+        private IPlayerRepository _playerRepository;
+        private ICardRepository _cardRepository;
+        private Player _player;
+        private List<Player> _players;
+        private Round _round;
+        private Card _card;
+        private Game _game;
+        private List<RoundServiceViewModel> _roundServiceViewModelsList;
 
-        public GameService(IGameRepository gameRepository)
+        public GameService(IGameRepository gameRepository, 
+                            IPlayerRepository playerRepository, 
+                            IRoundRepository roundRepository,
+                            ICardRepository cardRepository)
         {
             _gameRepository = gameRepository;
+            _playerRepository = playerRepository;
+            _roundRepository = roundRepository;
+            _cardRepository = cardRepository;
+            _players = new List<Player>();
+            _game = new Game();
         }
 
-        public void CreateGame()
-        {
-            Game game = new Game();
-            _gameRepository.Add(game);
+        public GameServiceViewModel CreateGame(GameServiceViewModel gameViewModel)
+        {            
+            _gameRepository.Add(_game);
+            _game = _gameRepository.GetLast();
+
+            CreateHuman(gameViewModel.PlayerName);
+            var human = _playerRepository.GetLast();
+            _players.Add(human);
+
+            if (gameViewModel.BotQuantity != 0)
+            {
+                CreateBot(gameViewModel.BotQuantity);
+                _players.AddRange(_playerRepository.GetSequence(gameViewModel.BotQuantity));
+            }
+
+            CreateDealer();
+            var dealer = _playerRepository.GetLast();
+            _players.Add(dealer);
+
+
+
+            CreateRound();
+
+            
+            
+            var gameServiceViewModel = new GameServiceViewModel();
+            return gameServiceViewModel;
         }
+        
 
-        //public GameServiceViewModel GenerateGameServiceViewModel()
-        //{
-        //    Game game = _gameRepository.GetLast();
-
-        //    GameServiceViewModel gameServiceViewModel = new GameServiceViewModel();
-        //    gameServiceViewModel.GameId = game.Id;
-
-        //    return gameServiceViewModel; 
-        //}
-
-        public void GetAllGames()
+        private void CreateRound(List<Player> players)
         {
-            _gameRepository.GetAll();
-        }
+            for (int i = 0; i < _players.Count(); i++)
+            {
+                _round = new Round();
+                _card = _cardRepository.GetRandom();
 
-        public void GetLastGame()
-        {
+                _round.CardId = _card.Id;
+                _round.PlayerId = _players[i].Id;
+                _roundRepository.Add(_round, _game.Id);
+                _roundServiceViewModelsList.Add(new RoundServiceViewModel { Name = _players[i].Name,
+                                                                            new CardServiceViewModel {CardRank =  } = })
+            }
+                
             
         }
+
+        private void CreateBot(int? quantityBot)
+        {
+            for (int i = 0; i < quantityBot; i++)
+            {
+                _playerRepository.Add(new Player { Name = $"Bot{1}" });
+            }
+        }
+
+        private void CreateHuman(string name)
+        {
+            _player = new Player{Name = name};
+            _playerRepository.Add(_player);
+        }
+
+        private void CreateDealer()
+        {
+            _player = new Player { Name = "Dealer"};
+            _playerRepository.Add(_player);
+        }
+
+        
     }
 }
