@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlackJackApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace BlackJackApp.Services.ServiceInterfaces
 {
     public interface IPlayerService
     {
-        void CreateHumanPlayer(PlayerServiceViewModel player);
+        PlayerServiceViewModel CreateHumanPlayer(string name);
 
         PlayerServiceViewModel CreateBot();
 

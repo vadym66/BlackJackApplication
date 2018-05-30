@@ -1,6 +1,7 @@
 ﻿using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.Services.ServiceInterfaces;
+using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,24 @@ namespace BlackJackApp.Services
             _gameRepository.Add(game);
         }
 
+        //public GameServiceViewModel GenerateGameServiceViewModel()
+        //{
+        //    Game game = _gameRepository.GetLast();
+
+        //    GameServiceViewModel gameServiceViewModel = new GameServiceViewModel();
+        //    gameServiceViewModel.GameId = game.Id;
+
+        //    return gameServiceViewModel; 
+        //}
+
         public void GetAllGames()
         {
             _gameRepository.GetAll();
+        }
+
+        public void GetLastGame()
+        {
+            
         }
     }
 }

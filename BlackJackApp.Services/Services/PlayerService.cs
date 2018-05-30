@@ -1,6 +1,7 @@
 ﻿using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.Services.ServiceInterfaces;
+using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,27 +21,50 @@ namespace BlackJackApp.Services
 
         public PlayerServiceViewModel CreateBot()
         {
-            Player playerBot = new Player();
-            _playerRepository.Add(playerBot);
+            var player = new Player { Name = "Bot" };
+            _playerRepository.Add(player);
+            player = _playerRepository.GetLast();
 
-            ///PlayerServiceviewModel.MapsFrom(playerBot)
-            return new PlayerServiceViewModel();
+            var playerServiceViewModel = new PlayerServiceViewModel();
+
+            //Mapping
+            playerServiceViewModel.Name = player.Name;
+            playerServiceViewModel.PlayerId = player.Id;
+
+            return playerServiceViewModel;
 
         }
 
         public PlayerServiceViewModel CreateDealer()
         {
-            throw new NotImplementedException();
+            var player = new Player { Name = "Dealer" };
+            _playerRepository.Add(player);
+            player = _playerRepository.GetLast();
+
+            var playerServiceViewModel = new PlayerServiceViewModel();
+
+            //Mapping
+            playerServiceViewModel.Name = player.Name;
+            playerServiceViewModel.PlayerId = player.Id;
+
+            return playerServiceViewModel;
         }
 
-        public void CreateHumanPlayer(PlayerServiceViewModel player)
+        public PlayerServiceViewModel CreateHumanPlayer(string name)
         {
-            throw new NotImplementedException();
+            var player = new Player { Name = name };
+            _playerRepository.Add(player);
+            player = _playerRepository.GetLast();
+
+            var playerServiceViewModel = new PlayerServiceViewModel();
+
+            //Mapping
+            playerServiceViewModel.Name = player.Name;
+            playerServiceViewModel.PlayerId = player.Id;
+
+            return playerServiceViewModel;
         }
 
-        public PlayerServiceViewModel TakeCard(CardServiceViewModel card)
-        {
-
-        }
+        
     }
 }

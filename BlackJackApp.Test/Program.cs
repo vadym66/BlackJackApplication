@@ -21,7 +21,22 @@ namespace BlackJackApp.Test
             //repo.Add(new Player { Name = "Peter" });
             //repo.Add(new Player { Name = "Peter" });
 
-            gameRepository.Add(new Game());
+            //gameRepository.Add(new Game());
+
+            //var game = gameRepository.GetLast();
+            //Console.WriteLine(game.Id.ToString());
+
+            Game game = new Game();
+            gameRepository.Add(game);
+
+            Console.WriteLine(game.Id.ToString());
+
+
+            //gameRepository.Add(new Game());
+            //game = gameRepository.GetLast();
+            ////Console.WriteLine(game.Id.ToString());
+            //gameRepository.DeleteAll();
+
 
         }
     }

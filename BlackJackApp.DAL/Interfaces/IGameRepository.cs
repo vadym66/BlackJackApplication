@@ -12,6 +12,7 @@ namespace BlackJackApp.DataAccess.Interface
         void Add(Game player);
         IEnumerable<Game> GetAll();
         Game GetById(int id);
+        Game GetLast();
         void Save();
         void DeleteAll();
     }

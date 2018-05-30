@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3F3921DB-1C9A-45BB-A29A-D52520644311}</ProjectGuid>
+    <ProjectGuid>{C0101599-9B70-4398-B8ED-D37FEBAC0199}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlackJackApp.Services</RootNamespace>
-    <AssemblyName>BlackJackApp.Services</AssemblyName>
+    <RootNamespace>BlackJackApp.ViewModels</RootNamespace>
+    <AssemblyName>BlackJackApp.ViewModels</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,17 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,34 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceInterfaces\ICardService.cs" />
-    <Compile Include="ServiceInterfaces\IGameService.cs" />
-    <Compile Include="ServiceInterfaces\IPlayerService.cs" />
-    <Compile Include="ServiceInterfaces\IRoundService.cs" />
-    <Compile Include="Services\CardService.cs" />
-    <Compile Include="Services\GameService.cs" />
-    <Compile Include="Services\PlayerService.cs" />
+    <Compile Include="GameServiceViewModel.cs" />
+    <Compile Include="PlayerServiceViewModel.cs" />
+    <Compile Include="RoundServicelViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\RoundService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlackJackApp.DAL\BlackJackApp.DataAccess.csproj">
-      <Project>{0837A9DA-C43A-432C-A85C-3E898171EB0D}</Project>
-      <Name>BlackJackApp.DataAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BlackJackApp.Entities\BlackJackApp.Entities.csproj">
       <Project>{0c4346c6-f247-4f53-bd37-cbe11ee7e271}</Project>
       <Name>BlackJackApp.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BlackJackApp.ViewModels\BlackJackApp.ViewModels.csproj">
-      <Project>{c0101599-9b70-4398-b8ed-d37febac0199}</Project>
-      <Name>BlackJackApp.ViewModels</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

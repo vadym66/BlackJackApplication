@@ -45,6 +45,14 @@ namespace BlackJackApp.Services
             }
         }
 
+        public Game GetLast()
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                return connection.Query<Game>("SELECT TOP 1 * FROM Games ORDER BY Id DESC").First();
+            }
+        }
+
         public void Save()
         {
             
