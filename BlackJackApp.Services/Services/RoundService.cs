@@ -4,9 +4,8 @@ using BlackJackApp.Services.ServiceInterfaces;
 using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.Configuration; 
 
 namespace BlackJackApp.Services
 {
@@ -44,14 +43,18 @@ namespace BlackJackApp.Services
 
                 _newUserViewModel = new NewUserViewModel();
 
-                _listOfNewUserViewModels[i].CurrentCard
-
-                _listOfNewUserViewModels.Add(userViewModels[i]);
+                _newUserViewModel.GameId = userViewModels[i].GameId;
+                _newUserViewModel.PlayerId = userViewModels[i].PlayerId;
+                _newUserViewModel.Name = userViewModels[i].Name;
+                _newUserViewModel.IsWinner = userViewModels[i].IsWinner;
+                _newUserViewModel.SumOfCards = userViewModels[i].SumOfCards + _card.Weight;
+                _newUserViewModel.CurrentCard.CardRank = _card.CardRank.ToString();
+                _newUserViewModel.CurrentCard.CardSuit = _card.CardSuit.ToString();
+                
+                _listOfNewUserViewModels.Add(_newUserViewModel);
             }
 
-            return _listOfUserViewModels;
+            return _listOfNewUserViewModels;
         }
-
-
     }
 }

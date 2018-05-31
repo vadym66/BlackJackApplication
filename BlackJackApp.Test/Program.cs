@@ -43,6 +43,7 @@ namespace BlackJackApp.Test
                 foreach (var item in userModel)
                 {
                     Console.WriteLine(item.ToString());
+                    Console.WriteLine("=============");
                 }
             }
         }

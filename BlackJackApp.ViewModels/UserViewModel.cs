@@ -16,7 +16,11 @@ namespace BlackJackApp.ViewModels
 
         public int SecondCardId { get; set; }
 
+        public int RoundId { get; set; }
+
         public string Name { get; set; }
+
+        public int SumOfCards { get; set; }
 
         public CardServiceViewModel CurrentCard1 { get; set; }
 
@@ -32,7 +36,7 @@ namespace BlackJackApp.ViewModels
 
         public override string ToString()
         {
-            return $"Name:{Name} gameId:{GameId} playerId:{PlayerId} IsWinner:{IsWinner}  : {CurrentCard1.CardRank}/{CurrentCard1.CardSuit}   {CurrentCard2.CardRank}/{CurrentCard2.CardSuit}  /{CurrentCard1.CardWeight + CurrentCard2.CardWeight}";
+            return $"Name:{Name} gameId:{GameId} playerId:{PlayerId} roundId:{RoundId} IsWinner:{IsWinner}  : {CurrentCard1.CardRank}/{CurrentCard1.CardSuit}   {CurrentCard2.CardRank}/{CurrentCard2.CardSuit}  /{SumOfCards}";
         }
     }
 }

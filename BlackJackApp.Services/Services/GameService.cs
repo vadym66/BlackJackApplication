@@ -105,6 +105,7 @@ namespace BlackJackApp.Services
 
                 _userViewModel.CurrentCard1.CardWeight = _card1.Weight;
                 _userViewModel.CurrentCard2.CardWeight = _card2.Weight;
+                _userViewModel.SumOfCards = _card1.Weight + _card2.Weight;
 
                 _listOfUserViewModels.Add(_userViewModel);
             }
@@ -120,10 +121,13 @@ namespace BlackJackApp.Services
 
                 _round.PlayerId = players[i].PlayerId;
                 _round.CardId = players[i].FirstCardId;
+                _roundRepository.Add(_round, players[i].GameId);
 
                 _round = new Round();
                 _round.PlayerId = players[i].PlayerId;
                 _round.CardId = players[i].SecondCardId;
+                _roundRepository.Add(_round, players[i].GameId);
+
             }
         }
         
