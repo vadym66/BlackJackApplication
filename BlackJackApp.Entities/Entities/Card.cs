@@ -15,9 +15,11 @@ namespace BlackJackApp.Entities.Entities
 
         public CardSuit CardSuit { get; set; }
 
+        public int Weight { get; set; }
+
         public override string ToString()
         {
-            return $"{CardRank} : {CardSuit}";
+            return $"{Id} :: {CardRank} - {Weight} : {CardSuit}";
         }
     }
 }

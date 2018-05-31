@@ -15,32 +15,43 @@ namespace BlackJackApp.Services
         private IRoundRepository _roundRepository;
         private ICardRepository _cardRepository;
         private IGameRepository _gameRepository;
+
         private Round _round;
+        private Card _card;
+        private NewUserViewModel _newUserViewModel;
+
+        private List<NewUserViewModel> _listOfNewUserViewModels;
 
         public RoundService(IRoundRepository roundRepository, ICardRepository cardRepository, IGameRepository gameRepository)
         {
             _roundRepository = roundRepository;
             _cardRepository = cardRepository;
             _gameRepository = gameRepository;
+            _listOfNewUserViewModels = new List<NewUserViewModel>();
         }
 
-        public RoundServiceViewModel CreateRound(int userId, int gameId)
+        public List<NewUserViewModel> CreateRound(List<UserViewModel> userViewModels)
         {
-            _round = new Round();
+            for (int i = 0; i < userViewModels.Count; i++)
+            {
+                _card = new Card();
+                _card = _cardRepository.GetRandom();
 
-            var card = _cardRepository.GetRandom();
+                _round = new Round();
+                _round.PlayerId = userViewModels[i].PlayerId;
+                _round.CardId = _card.Id;
+                _roundRepository.Add(_round, userViewModels[i].GameId);
 
-            _round.PlayerId = userId;
-            _round.CardId = card.Id;
+                _newUserViewModel = new NewUserViewModel();
 
-            _roundRepository.Add(_round, gameId);
+                _listOfNewUserViewModels[i].CurrentCard
 
-            var roundServiceViewModel = new RoundServiceViewModel();
-            roundServiceViewModel.Round = _round.Id;
-            roundServiceViewModel.Card.CardRank = card.CardRank.ToString();
-            roundServiceViewModel.Card.CardSuit = card.CardSuit.ToString();
+                _listOfNewUserViewModels.Add(userViewModels[i]);
+            }
 
-            return roundServiceViewModel;
+            return _listOfUserViewModels;
         }
+
+
     }
 }

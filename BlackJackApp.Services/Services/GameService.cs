@@ -16,12 +16,16 @@ namespace BlackJackApp.Services
         private IRoundRepository _roundRepository;
         private IPlayerRepository _playerRepository;
         private ICardRepository _cardRepository;
-        private Player _player;
-        private List<Player> _players;
-        private Round _round;
-        private Card _card;
+
         private Game _game;
-        private List<RoundServiceViewModel> _roundServiceViewModelsList;
+        private Player _player;
+        private Round _round;
+        private Card _card1;
+        private Card _card2;
+        private UserViewModel _userViewModel;
+
+        private List<Player> _listOfPlayers;
+        private List<UserViewModel> _listOfUserViewModels;
 
         public GameService(IGameRepository gameRepository, 
                             IPlayerRepository playerRepository, 
@@ -32,77 +36,108 @@ namespace BlackJackApp.Services
             _playerRepository = playerRepository;
             _roundRepository = roundRepository;
             _cardRepository = cardRepository;
-            _players = new List<Player>();
+
             _game = new Game();
+
+            _listOfPlayers = new List<Player>();
+            _listOfUserViewModels = new List<UserViewModel>();
         }
 
-        public GameServiceViewModel CreateGame(GameServiceViewModel gameViewModel)
-        {            
+        public List<UserViewModel> CreateGame(GameServiceViewModel gameViewModel) // Creating first round 
+        {
+            _game = AddGameToDataBase();
+            _listOfPlayers = CreatePlayers(gameViewModel.PlayerName, gameViewModel.BotQuantity);
+            _listOfUserViewModels = GetCompleteUserViewModel(_listOfPlayers);
+            this.AddFirstRoundToDataBase(_listOfUserViewModels, _game.Id);
+            CheckForWinner(_listOfUserViewModels);
+
+            return _listOfUserViewModels;
+        }
+        private Game AddGameToDataBase()
+        {
             _gameRepository.Add(_game);
             _game = _gameRepository.GetLast();
+            return _game;
+        }
 
-            CreateHuman(gameViewModel.PlayerName);
-            var human = _playerRepository.GetLast();
-            _players.Add(human);
+        private List<Player> CreatePlayers(string name, int quantityBot)
+        {
+            _player = new Player { Name = name }; //HumanPlayer Creating
+            _playerRepository.Add(_player); //Adding to db
+            _listOfPlayers.Add(_playerRepository.GetLast()); //Get from db
 
-            if (gameViewModel.BotQuantity != 0)
+            if (quantityBot != 0) // Bot Creating
             {
-                CreateBot(gameViewModel.BotQuantity);
-                _players.AddRange(_playerRepository.GetSequence(gameViewModel.BotQuantity));
+                for (int i = 0; i < quantityBot; i++)
+                {
+                    _playerRepository.Add(new Player { Name = $"Bot{i}" }); //Adding to db
+                    _listOfPlayers.Add(_playerRepository.GetLast()); //Get from db
+                }
             }
 
-            CreateDealer();
-            var dealer = _playerRepository.GetLast();
-            _players.Add(dealer);
+            _player = new Player { Name = "Dealer" }; // Dealer Creating
+            _playerRepository.Add(_player); //Adding to db
+            _listOfPlayers.Add(_playerRepository.GetLast()); //Get from db
 
-
-
-            CreateRound();
-
-            
-            
-            var gameServiceViewModel = new GameServiceViewModel();
-            return gameServiceViewModel;
+            return _listOfPlayers;
         }
-        
 
-        private void CreateRound(List<Player> players)
+        private List<UserViewModel> GetCompleteUserViewModel(List<Player> players)
         {
-            for (int i = 0; i < _players.Count(); i++)
+            for (int i = 0; i < players.Count; i++)
+            {
+                _userViewModel = new UserViewModel();
+                _card1 = _cardRepository.GetRandom();
+                _card2 = _cardRepository.GetRandom();
+
+                _userViewModel.GameId = _game.Id;
+                _userViewModel.PlayerId = players[i].Id;
+                _userViewModel.Name = players[i].Name;
+
+                _userViewModel.FirstCardId = _card1.Id;
+                _userViewModel.SecondCardId = _card2.Id;
+
+                _userViewModel.CurrentCard1.CardRank = _card1.CardRank.ToString();
+                _userViewModel.CurrentCard2.CardRank = _card2.CardRank.ToString();
+
+                _userViewModel.CurrentCard1.CardSuit = _card1.CardSuit.ToString();
+                _userViewModel.CurrentCard2.CardSuit = _card2.CardSuit.ToString();
+
+                _userViewModel.CurrentCard1.CardWeight = _card1.Weight;
+                _userViewModel.CurrentCard2.CardWeight = _card2.Weight;
+
+                _listOfUserViewModels.Add(_userViewModel);
+            }
+
+            return _listOfUserViewModels;
+        }
+
+        private void AddFirstRoundToDataBase (List<UserViewModel> players, int gameId)
+        {
+            for (int i = 0; i < players.Count; i++)
             {
                 _round = new Round();
-                _card = _cardRepository.GetRandom();
 
-                _round.CardId = _card.Id;
-                _round.PlayerId = _players[i].Id;
-                _roundRepository.Add(_round, _game.Id);
-                _roundServiceViewModelsList.Add(new RoundServiceViewModel { Name = _players[i].Name,
-                                                                            new CardServiceViewModel {CardRank =  } = })
-            }
-                
-            
-        }
+                _round.PlayerId = players[i].PlayerId;
+                _round.CardId = players[i].FirstCardId;
 
-        private void CreateBot(int? quantityBot)
-        {
-            for (int i = 0; i < quantityBot; i++)
-            {
-                _playerRepository.Add(new Player { Name = $"Bot{1}" });
+                _round = new Round();
+                _round.PlayerId = players[i].PlayerId;
+                _round.CardId = players[i].SecondCardId;
             }
         }
-
-        private void CreateHuman(string name)
-        {
-            _player = new Player{Name = name};
-            _playerRepository.Add(_player);
-        }
-
-        private void CreateDealer()
-        {
-            _player = new Player { Name = "Dealer"};
-            _playerRepository.Add(_player);
-        }
-
         
+        private List<UserViewModel> CheckForWinner(List<UserViewModel> userViewModels)
+        {
+            for (int i = 0; i < userViewModels.Count; i++)
+            {
+                if (userViewModels[i].CurrentCard1.CardWeight + 
+                    userViewModels[i].CurrentCard2.CardWeight == 21)
+                {
+                    userViewModels[i].IsWinner = true;
+                }
+            }
+            return userViewModels;
+        }
     }
 }

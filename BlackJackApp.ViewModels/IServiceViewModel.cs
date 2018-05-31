@@ -1,7 +1,6 @@
 ﻿namespace BlackJackApp.ViewModels
 {
-    public class RoundServiceViewModel 
+    public interface IServiceViewModel
     {
-        
     }
 }

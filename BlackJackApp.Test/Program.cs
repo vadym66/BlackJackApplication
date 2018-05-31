@@ -1,5 +1,7 @@
-﻿using BlackJackApp.Entities.Entities;
+﻿using BlackJackApp.DataAccess.Interface;
+using BlackJackApp.Entities.Entities;
 using BlackJackApp.Services;
+using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,47 +11,40 @@ using System.Threading.Tasks;
 namespace BlackJackApp.Test
 {
     class Program
-    {
+    {   
         static void Main(string[] args)
         {
-            var playerRepository = new PlayerRepository();
+            ICardRepository cardRepository = new CardRepository();
+            IGameRepository gameRepository = new GameRepository();
+            IPlayerRepository playerRepository = new PlayerRepository();
+            IRoundRepository roundRepository = new RoundRepository();
 
-            var players = playerRepository.GetSequence(3);
+            var gameServiceViewModelFromClient = new GameServiceViewModel { PlayerName = "Sam", BotQuantity = 3 };
 
-            foreach (var item in players)
+            RoundService roundService = new RoundService(roundRepository, cardRepository, gameRepository);
+
+            var gameCreator = new GameService(gameRepository, playerRepository, roundRepository, cardRepository);
+
+            var listOfPlayers = gameCreator.CreateGame(gameServiceViewModelFromClient);
+
+            Console.WriteLine("First Round");
+            foreach (var item in listOfPlayers)
             {
-                Console.WriteLine(item);
+                Console.WriteLine(item.ToString());
+                Console.WriteLine("=============");
             }
-            //var cardRepository = new CardRepository();
-            //var roundRepository = new RoundRepository();
-            //var gameRepository = new GameRepository();
 
-            //var gameService = new GameService(gameRepository);
-            //var playerService = new PlayerService(playerRepository);
-            //var roundService = new RoundService(roundRepository, cardRepository, gameRepository);
-            //var cardService = new CardService(cardRepository);
+            var userModel = roundService.CreateRound(listOfPlayers);
 
-            //string name = "Sam";
-            //var startGame = gameService.CreateGame(null, name);
-
-            //var human = playerService.CreateHumanPlayer(startGame.PlayerName);
-            //var dealer = playerService.CreateDealer();
-
-            //var createRoundforHuman = roundService.CreateRound(human.PlayerId, startGame.GameId);
-            //var createRoundforHuman1 = roundService.CreateRound(human.PlayerId, startGame.GameId);
-            //Console.WriteLine();
-
-            //var createRoundforDealer = roundService.CreateRound(dealer.PlayerId, startGame.GameId);
-            //var createRoundforDealer2 = roundService.CreateRound(dealer.PlayerId, startGame.GameId);
-
-            //var createRoundforHuman3 = roundService.CreateRound(human.PlayerId, startGame.GameId);
-
-            //var createRoundforDealer3 = roundService.CreateRound(dealer.PlayerId, startGame.GameId);
-
-
-            //string name = "peter";
-            //playerRepository.Add(new Player {Name = name });
-
+            Console.WriteLine("Second Round");
+            string more = Console.ReadLine();
+            if (more == "more")
+            {
+                foreach (var item in userModel)
+                {
+                    Console.WriteLine(item.ToString());
+                }
+            }
         }
     }
 }

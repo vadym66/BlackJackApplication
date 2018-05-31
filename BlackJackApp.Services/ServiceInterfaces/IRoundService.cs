@@ -9,6 +9,6 @@ namespace BlackJackApp.Services.ServiceInterfaces
 {
     public interface IRoundService
     {
-        RoundServiceViewModel CreateRound(int userId, int gameId);
+        List<NewUserViewModel> CreateRound(List<UserViewModel> userViewModels);
     }
 }
