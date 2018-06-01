@@ -53,6 +53,7 @@ namespace BlackJackApp.Services
 
             return _listOfUserViewModels;
         }
+
         private Game AddGameToDataBase()
         {
             _gameRepository.Add(_game);

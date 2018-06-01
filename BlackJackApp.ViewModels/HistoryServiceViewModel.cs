@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.ViewModels
 {
-    public class ResponceAfterFirstRoundViewModel
+    public class HistoryServiceViewModel
     {
-        public int GameId { get; set; }
-
-        public string Name { get; set; }
-
+        public void PrintHistory()
+        {
+            Console.WriteLine("history must be here...");
+        }
     }
 }

@@ -54,14 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceInterfaces\ICardService.cs" />
     <Compile Include="ServiceInterfaces\IGameService.cs" />
-    <Compile Include="ServiceInterfaces\IPlayerService.cs" />
     <Compile Include="ServiceInterfaces\IRoundService.cs" />
-    <Compile Include="Services\CardService.cs" />
     <Compile Include="Services\GameService.cs" />
-    <Compile Include="Services\PlayerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\HistoryService.cs" />
     <Compile Include="Services\RoundService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,6 @@ namespace BlackJackApp.Services.ServiceInterfaces
 {
     public interface IGameService
     {
-        List<UserViewModel> CreateGame(GameServiceViewModel gameServiceViewModel);
-
+        List<UserViewModel> CreateGame(GameServiceViewModel gameViewModel);
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace BlackJackApp.Test
 {
     class Program
-    {   
+    {
         static void Main(string[] args)
         {
             ICardRepository cardRepository = new CardRepository();
@@ -19,7 +19,7 @@ namespace BlackJackApp.Test
             IPlayerRepository playerRepository = new PlayerRepository();
             IRoundRepository roundRepository = new RoundRepository();
 
-            var gameServiceViewModelFromClient = new GameServiceViewModel { PlayerName = "Sam", BotQuantity = 3 };
+            var gameServiceViewModelFromClient = new GameServiceViewModel { PlayerName = "Sam", BotQuantity = 5 };
 
             RoundService roundService = new RoundService(roundRepository, cardRepository, gameRepository);
 
@@ -34,18 +34,28 @@ namespace BlackJackApp.Test
                 Console.WriteLine("=============");
             }
 
-            var userModel = roundService.CreateRound(listOfPlayers);
+            var newlistOfPlayers = roundService.MapTheModel(listOfPlayers);
 
-            Console.WriteLine("Second Round");
-            string more = Console.ReadLine();
-            if (more == "more")
+            bool ask1;
+
+            do
             {
+                Console.WriteLine("=======Enter :");
+                string ask = Console.ReadLine();
+                bool.TryParse(ask, out ask1);
+                Console.WriteLine("==============");
+                newlistOfPlayers[0].IsTakeCard = ask1;
+                var userModel = roundService.GiveCardToPlayer(newlistOfPlayers);
+                Console.WriteLine("n Round");
+                Console.WriteLine("=============");
+                Console.WriteLine("=============");
                 foreach (var item in userModel)
                 {
                     Console.WriteLine(item.ToString());
                     Console.WriteLine("=============");
                 }
             }
+            while (ask1);
         }
     }
 }

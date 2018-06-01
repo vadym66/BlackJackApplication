@@ -45,13 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardServiceViewModel.cs" />
+    <Compile Include="GameServiceViewModel.cs" />
+    <Compile Include="HistoryServiceViewModel.cs" />
     <Compile Include="NewUserViewModel.cs" />
     <Compile Include="UserViewModel.cs" />
-    <Compile Include="GameServiceViewModel.cs" />
-    <Compile Include="IServiceViewModel.cs" />
-    <Compile Include="PlayerServiceViewModel.cs" />
-    <Compile Include="ResponceAfterFirstRoundViewModel.cs" />
-    <Compile Include="RoundServicelViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,8 @@ namespace BlackJackApp.ViewModels
 
         public bool IsWinner { get; set; }
 
+        public bool IsTakeCard { get; set; }
+
         public UserViewModel()
         {
             CurrentCard1 = new CardServiceViewModel();
