@@ -18,7 +18,7 @@ namespace BlackJackApp.Services.Services
 
         public HistoryServiceViewModel GetLastGame()
         {
-
+            return new HistoryServiceViewModel();
         }
     }
 }

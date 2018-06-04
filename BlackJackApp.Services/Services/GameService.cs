@@ -10,27 +10,17 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Services
 {
-    public class GameService : IGameService
+    public class GameService : IGameService<Game>
     {
-        private IGameRepository _gameRepository;
-        private IRoundRepository _roundRepository;
-        private IPlayerRepository _playerRepository;
-        private ICardRepository _cardRepository;
+        private IGameRepository<Game> _gameRepository;
+        private IRoundRepository<Round> _roundRepository;
+        private IPlayerRepository<Player> _playerRepository;
+        private ICardRepository<Card> _cardRepository;
 
-        private Game _game;
-        private Player _player;
-        private Round _round;
-        private Card _card1;
-        private Card _card2;
-        private UserViewModel _userViewModel;
-
-        private List<Player> _listOfPlayers;
-        private List<UserViewModel> _listOfUserViewModels;
-
-        public GameService(IGameRepository gameRepository, 
-                            IPlayerRepository playerRepository, 
-                            IRoundRepository roundRepository,
-                            ICardRepository cardRepository)
+        public GameService(IGameRepository<Game> gameRepository, 
+                            IPlayerRepository<Player> playerRepository, 
+                            IRoundRepository<Round> roundRepository,
+                            ICardRepository<Card> cardRepository)
         {
             _gameRepository = gameRepository;
             _playerRepository = playerRepository;
@@ -43,92 +33,104 @@ namespace BlackJackApp.Services
             _listOfUserViewModels = new List<UserViewModel>();
         }
 
-        public List<UserViewModel> CreateGame(GameServiceViewModel gameViewModel) // Creating first round 
+        public async Task<List<UserViewModel>> CreateGame(Task<GameServiceViewModel> viewFromUI) // Creating first round 
         {
-            _game = AddGameToDataBase();
-            _listOfPlayers = CreatePlayers(gameViewModel.PlayerName, gameViewModel.BotQuantity);
-            _listOfUserViewModels = GetCompleteUserViewModel(_listOfPlayers);
-            this.AddFirstRoundToDataBase(_listOfUserViewModels, _game.Id);
-            CheckForWinner(_listOfUserViewModels);
+            var game = await AddGameToDataBase();
+            var listOfPlayers = await CreatePlayers(viewFromUI.Result.PlayerName, viewFromUI.Result.BotQuantity);
 
-            return _listOfUserViewModels;
+            var listOfUserViewModels = await GetCompleteUserViewModel(listOfPlayers, game);
+
+            await AddFirstRoundToDataBase(listOfUserViewModels, game.Id);
+            CheckForWinner(listOfUserViewModels);
+
+            return listOfUserViewModels;
         }
 
-        private Game AddGameToDataBase()
+        private async Task<Game> AddGameToDataBase()
         {
-            _gameRepository.Add(_game);
-            _game = _gameRepository.GetLast();
-            return _game;
+            Game game = new Game();
+            await _gameRepository.Add(game);
+            game = await _gameRepository.GetLast();
+            return game;
         }
 
-        private List<Player> CreatePlayers(string name, int quantityBot)
+        private async Task<List<Player>> CreatePlayers(string name, int quantityBot)
         {
+            List<Player> listOfPlayers = new List<Player>();
+
             _player = new Player { Name = name }; //HumanPlayer Creating
-            _playerRepository.Add(_player); //Adding to db
-            _listOfPlayers.Add(_playerRepository.GetLast()); //Get from db
+            await _playerRepository.Add(_player); //Adding to db
+            var player = await _playerRepository.GetLast();
+            _listOfPlayers.Add(player); //Get from db
 
             if (quantityBot != 0) // Bot Creating
             {
                 for (int i = 0; i < quantityBot; i++)
                 {
-                    _playerRepository.Add(new Player { Name = $"Bot{i}" }); //Adding to db
-                    _listOfPlayers.Add(_playerRepository.GetLast()); //Get from db
+                    await _playerRepository.Add(new Player { Name = $"Bot{i}" }); //Adding to db
+                    player = await _playerRepository.GetLast();
+                    _listOfPlayers.Add(player); //Get from db
                 }
             }
 
             _player = new Player { Name = "Dealer" }; // Dealer Creating
-            _playerRepository.Add(_player); //Adding to db
-            _listOfPlayers.Add(_playerRepository.GetLast()); //Get from db
+            await _playerRepository.Add(_player); //Adding to db
+            player = await _playerRepository.GetLast();
+            listOfPlayers.Add(player); //Get from db
 
-            return _listOfPlayers;
+            return listOfPlayers;
         }
 
-        private List<UserViewModel> GetCompleteUserViewModel(List<Player> players)
+        private async Task<List<UserViewModel>> GetCompleteUserViewModel(List<Player> players, Game game)
         {
+            List<UserViewModel> listOfUserViewModel = new List<UserViewModel>();
+
             for (int i = 0; i < players.Count; i++)
             {
-                _userViewModel = new UserViewModel();
-                _card1 = _cardRepository.GetRandom();
-                _card2 = _cardRepository.GetRandom();
+                var userViewModel = new UserViewModel();
 
-                _userViewModel.GameId = _game.Id;
-                _userViewModel.PlayerId = players[i].Id;
-                _userViewModel.Name = players[i].Name;
+                Card card1 = await _cardRepository.GetRandom();
+                Card card2 = await _cardRepository.GetRandom();
 
-                _userViewModel.FirstCardId = _card1.Id;
-                _userViewModel.SecondCardId = _card2.Id;
+                userViewModel.GameId = game.Id;
+                userViewModel.PlayerId = players[i].Id;
+                userViewModel.Name = players[i].Name;
 
-                _userViewModel.CurrentCard1.CardRank = _card1.CardRank.ToString();
-                _userViewModel.CurrentCard2.CardRank = _card2.CardRank.ToString();
+                userViewModel.CurrentCard.Add(new CardServiceViewModel());
+                userViewModel.CurrentCard.Add(new CardServiceViewModel());
 
-                _userViewModel.CurrentCard1.CardSuit = _card1.CardSuit.ToString();
-                _userViewModel.CurrentCard2.CardSuit = _card2.CardSuit.ToString();
+                userViewModel.CurrentCard[0].CardId = card1.Id;
+                userViewModel.CurrentCard[0].CardRank = card1.CardRank.ToString();
+                userViewModel.CurrentCard[0].CardSuit = card1.CardSuit.ToString();
+                userViewModel.CurrentCard[0].CardWeight = card1.Weight;
 
-                _userViewModel.CurrentCard1.CardWeight = _card1.Weight;
-                _userViewModel.CurrentCard2.CardWeight = _card2.Weight;
-                _userViewModel.SumOfCards = _card1.Weight + _card2.Weight;
+                userViewModel.CurrentCard[1].CardId = card2.Id;
+                userViewModel.CurrentCard[1].CardSuit = card2.CardSuit.ToString();
+                userViewModel.CurrentCard[1].CardRank = card2.CardRank.ToString();
+                userViewModel.CurrentCard[1].CardWeight = card2.Weight;
 
-                _listOfUserViewModels.Add(_userViewModel);
+                userViewModel.SumOfCards = card1.Weight + card2.Weight;
+
+                listOfUserViewModel.Add(userViewModel);
             }
 
-            return _listOfUserViewModels;
+            return listOfUserViewModel;
         }
 
-        private void AddFirstRoundToDataBase (List<UserViewModel> players, int gameId)
+        private async Task AddFirstRoundToDataBase (List<UserViewModel> players, int gameId)
         {
             for (int i = 0; i < players.Count; i++)
             {
-                _round = new Round();
+                var round = new Round();
 
-                _round.PlayerId = players[i].PlayerId;
-                _round.CardId = players[i].FirstCardId;
-                _roundRepository.Add(_round, players[i].GameId);
+                round.PlayerId = players[i].PlayerId;
+                round.CardId = players[i].CurrentCard[0].CardId;
+                await _roundRepository.Add(round, players[i].GameId);
 
-                _round = new Round();
-                _round.PlayerId = players[i].PlayerId;
-                _round.CardId = players[i].SecondCardId;
-                _roundRepository.Add(_round, players[i].GameId);
-
+                round = new Round();
+                round.PlayerId = players[i].PlayerId;
+                round.CardId = players[i].CurrentCard[1].CardId;
+                await _roundRepository.Add(round, players[i].GameId);
             }
         }
         

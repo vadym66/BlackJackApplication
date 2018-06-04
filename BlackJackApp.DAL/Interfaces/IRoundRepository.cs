@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.DataAccess.Interface
 {
-    public interface IRoundRepository
+    public interface IRoundRepository<T> where T : class
     {
-        void Add(Round round, int game_id);
-        IEnumerable<Round> GetAll();
-        Round GetById(int id);
-        void Save();
+        Task Add(Round round, int gameId);
     }
 }

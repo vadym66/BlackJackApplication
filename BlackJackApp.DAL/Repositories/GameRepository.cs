@@ -11,51 +11,30 @@ using Dapper;
 
 namespace BlackJackApp.Services
 {
-    public class GameRepository : IGameRepository
+    public class GameRepository<T> : IGameRepository<Game> where T : Game
     {
-        public void Add(Game game)
+        public async Task Add(Game game)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                connection.Execute("INSERT INTO Games DEFAULT VALUES");
+               await connection.ExecuteAsync("INSERT INTO Games DEFAULT VALUES");
             }
         }
 
-        public void DeleteAll()
+        public async Task<IEnumerable<Game>> GetAll()
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                connection.Execute("DELETE FROM Games");
+                return await connection.QueryAsync<Game>("SELECT * FROM Games");
             }
         }
 
-        public IEnumerable<Game> GetAll()
+        public async Task<Game> GetLast()
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                return connection.Query<Game>("SELECT * FROM Games").ToList();
+                return await connection.QuerySingleAsync<Game>("SELECT TOP 1 * FROM Games ORDER BY Id DESC");
             }
-        }
-
-        public Game GetById(int id)
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                return connection.Query<Game>("SELECT * FROM Cards WHERE Id=@id", new { id }).First();
-            }
-        }
-
-        public Game GetLast()
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                return connection.Query<Game>("SELECT TOP 1 * FROM Games ORDER BY Id DESC").First();
-            }
-        }
-
-        public void Save()
-        {
-            
         }
     }
 }

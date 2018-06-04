@@ -11,39 +11,14 @@ using Dapper;
 
 namespace BlackJackApp.Services
 {
-    public class RoundRepository : IRoundRepository
+    public class RoundRepository<T> : IRoundRepository<Round> where T : Round
     {
-        public void Add(Round round)
+        public async Task Add(Round round, int gameId)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                connection.Execute("INSERT INTO Round(Player_Id, Card_Id, Game_Id) VALUES(@Name)");
+                await connection.ExecuteAsync("INSERT INTO Rounds(Player_Id, Card_Id, Game_Id) VALUES(@PlayerId, @CardId, @gameId)", new {round.PlayerId, round.CardId, gameId });
             }
-        }
-
-        public void Add(Round round, int gameId)
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                connection.Execute("INSERT INTO Rounds(Player_Id, Card_Id, Game_Id) VALUES(@PlayerId, @CardId, @gameId)", new {round.PlayerId, round.CardId, gameId });
-            }
-        }
-
-        public IEnumerable<Round> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public Round GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            
         }
     }
 }

@@ -2,6 +2,8 @@
 {
     public class CardServiceViewModel
     {
+        public int CardId { get; set; }
+
         public string CardRank { get; set; }
 
         public string CardSuit { get; set; }

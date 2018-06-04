@@ -14,10 +14,10 @@ namespace BlackJackApp.Test
     {
         static void Main(string[] args)
         {
-            ICardRepository cardRepository = new CardRepository();
-            IGameRepository gameRepository = new GameRepository();
-            IPlayerRepository playerRepository = new PlayerRepository();
-            IRoundRepository roundRepository = new RoundRepository();
+            ICardRepository<Card> cardRepository = new CardRepository<Card>();
+            IGameRepository<Game> gameRepository = new GameRepository<Game>();
+            IPlayerRepository<Player> playerRepository = new PlayerRepository<Player>();
+            IRoundRepository<Round> roundRepository = new RoundRepository<Round>();
 
             var gameServiceViewModelFromClient = new GameServiceViewModel { PlayerName = "Sam", BotQuantity = 5 };
 
@@ -26,6 +26,8 @@ namespace BlackJackApp.Test
             var gameCreator = new GameService(gameRepository, playerRepository, roundRepository, cardRepository);
 
             var listOfPlayers = gameCreator.CreateGame(gameServiceViewModelFromClient);
+
+            var player = playerRepository.GetLast();
 
             Console.WriteLine("First Round");
             foreach (var item in listOfPlayers)

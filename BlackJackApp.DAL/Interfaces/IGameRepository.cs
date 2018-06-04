@@ -7,13 +7,10 @@ using BlackJackApp.Entities.Entities;
 
 namespace BlackJackApp.DataAccess.Interface
 {
-    public interface IGameRepository
+    public interface IGameRepository<T> where T : class
     {
-        void Add(Game player);
-        IEnumerable<Game> GetAll();
-        Game GetById(int id);
-        Game GetLast();
-        void Save();
-        void DeleteAll();
+        Task Add(Game game);
+        Task<IEnumerable<Game>> GetAll();
+        Task<Game> GetLast();
     }
 }

@@ -8,14 +8,10 @@ using BlackJackApp.Entities.Entities;
 
 namespace BlackJackApp.DataAccess.Interface
 {
-    public interface IPlayerRepository
+    public interface IPlayerRepository<T> where T : class
     {
-        IEnumerable<Player> GetAll();
-        Player GetById(int id);
-        Player GetLast();
-        IEnumerable<Player> GetSequence(int quantityBot);
-        void Add(Player player);
-        void Save();
-        void DeleteAll();
+        Task Add(Player player);
+        Task<IEnumerable<Player>> GetAll();
+        Task<Player> GetLast();
     }
 }

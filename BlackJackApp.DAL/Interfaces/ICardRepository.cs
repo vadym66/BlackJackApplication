@@ -9,10 +9,8 @@ using BlackJackApp.Entities.Entities;
 namespace BlackJackApp.DataAccess.Interface
 
 { 
-    public interface ICardRepository
+    public interface ICardRepository<T> where T : class
     {
-        IEnumerable<Card> GetAll();
-        Card GetRandom();
-        Card GetById(int id);
+        public async Task<Card> GetRandom();
     }
 }

@@ -12,61 +12,31 @@ using Dapper;
 
 namespace BlackJackApp.Services
 {
-    public class PlayerRepository : IPlayerRepository
+    public class PlayerRepository<T> : IPlayerRepository<Player> where T : Player
     {
         //insert Player to database
-        public void Add(Player player)
+        public async Task Add(Player player)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                connection.Execute("INSERT INTO Players(Name) VALUES(@Name)", new { player.Name });
+                await connection.ExecuteAsync("INSERT INTO Players(Name) VALUES(@Name)", new { player.Name });
             }
         }
 
-        public void DeleteAll()
+        public async Task<IEnumerable<Player>> GetAll()
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                connection.Execute("DELETE FROM Players");
+                return await connection.QueryAsync<Player>("SELECT * FROM Players");
             }
         }
 
-        public IEnumerable<Player> GetAll()
+        public async Task<Player> GetLast()
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                return connection.Query<Player>("SELECT * FROM Players").ToList();
+                return await connection.QuerySingleAsync<Player>("SELECT TOP 1 * FROM Players ORDER BY Id DESC");
             }
-        }
-
-        public Player GetById(int id)
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                return connection.Query<Player>("SELECT * FROM Players WHERE Id=@id", new { id }).First();
-            }
-        }
-
-        public Player GetLast()
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                return connection.Query<Player>("SELECT TOP 1 * FROM Players ORDER BY Id DESC").First();
-            }
-        }
-
-        public IEnumerable<Player> GetSequence(int quantityBot)
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                return connection.Query<Player>("select TOP 5 * FROM Players ORDER BY Id desc").Take(quantityBot);
-            }
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
         }
     }
-
 }

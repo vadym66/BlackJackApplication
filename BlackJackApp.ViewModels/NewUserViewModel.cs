@@ -19,7 +19,7 @@ namespace BlackJackApp.ViewModels
 
         public string Name { get; set; }
 
-        public CardServiceViewModel CurrentCard { get; set; }
+        public List<CardServiceViewModel> CurrentCard { get; set; }
 
         public int SumOfCards { get; set; }
 
@@ -29,7 +29,7 @@ namespace BlackJackApp.ViewModels
 
         public NewUserViewModel()
         {
-            CurrentCard = new CardServiceViewModel();
+            CurrentCard = new List<CardServiceViewModel>();
         }
 
         public override string ToString()

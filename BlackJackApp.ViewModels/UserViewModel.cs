@@ -12,19 +12,13 @@ namespace BlackJackApp.ViewModels
 
         public int PlayerId { get; set; }
 
-        public int FirstCardId { get; set; }
-
-        public int SecondCardId { get; set; }
-
         public int RoundId { get; set; }
 
         public string Name { get; set; }
 
         public int SumOfCards { get; set; }
 
-        public CardServiceViewModel CurrentCard1 { get; set; }
-
-        public CardServiceViewModel CurrentCard2 { get; set; }
+        public List<CardServiceViewModel> CurrentCard{ get; set; }
 
         public bool IsWinner { get; set; }
 

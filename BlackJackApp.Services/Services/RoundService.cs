@@ -11,9 +11,9 @@ namespace BlackJackApp.Services
 {
     public class RoundService : IRoundService
     {
-        private IRoundRepository _roundRepository;
-        private ICardRepository _cardRepository;
-        private IGameRepository _gameRepository;
+        private IRoundRepository<Round> _roundRepository;
+        private ICardRepository<Card> _cardRepository;
+        private IGameRepository<Game> _gameRepository;
 
         private Round _round;
         private Card _card;
@@ -21,7 +21,7 @@ namespace BlackJackApp.Services
 
         private List<NewUserViewModel> _listOfNewUserViewModels;
 
-        public RoundService(IRoundRepository roundRepository, ICardRepository cardRepository, IGameRepository gameRepository)
+        public RoundService(IRoundRepository<Round> roundRepository, ICardRepository<Card> cardRepository, IGameRepository<Game> gameRepository)
         {
             _roundRepository = roundRepository;
             _cardRepository = cardRepository;
