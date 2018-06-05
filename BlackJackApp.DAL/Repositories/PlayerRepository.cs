@@ -8,18 +8,19 @@ using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities;
 using BlackJackApp.Entities.Entities;
 using Dapper;
-
+using Dapper.Contrib;
+using Dapper.Contrib.Extensions;
 
 namespace BlackJackApp.Services
 {
     public class PlayerRepository<T> : IPlayerRepository<Player> where T : Player
     {
         //insert Player to database
-        public async Task Add(Player player)
+        public async Task<int> Add(Player player)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                await connection.ExecuteAsync("INSERT INTO Players(Name) VALUES(@Name)", new { player.Name });
+                return await connection.InsertAsync(player);
             }
         }
 
@@ -28,14 +29,6 @@ namespace BlackJackApp.Services
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
                 return await connection.QueryAsync<Player>("SELECT * FROM Players");
-            }
-        }
-
-        public async Task<Player> GetLast()
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                return await connection.QuerySingleAsync<Player>("SELECT TOP 1 * FROM Players ORDER BY Id DESC");
             }
         }
     }

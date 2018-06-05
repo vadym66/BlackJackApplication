@@ -10,8 +10,7 @@ namespace BlackJackApp.DataAccess.Interface
 {
     public interface IPlayerRepository<T> where T : class
     {
-        Task Add(Player player);
+        Task<int> Add(Player player);
         Task<IEnumerable<Player>> GetAll();
-        Task<Player> GetLast();
     }
 }

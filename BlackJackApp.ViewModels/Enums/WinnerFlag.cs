@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackApp.Entities.Entities
+namespace BlackJackApp.Services.Enums
 {
-    public class Game
+    public enum WinnerFlag
     {
-        public int Id { get; set; }
+        winner = 0,
+        notWinner = 1,
+        draw = 3
     }
 }

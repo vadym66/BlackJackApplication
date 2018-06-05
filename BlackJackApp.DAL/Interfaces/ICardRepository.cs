@@ -11,6 +11,6 @@ namespace BlackJackApp.DataAccess.Interface
 { 
     public interface ICardRepository<T> where T : class
     {
-        public async Task<Card> GetRandom();
+        Task<Card> GetRandom();
     }
 }

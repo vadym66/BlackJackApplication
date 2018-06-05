@@ -9,7 +9,7 @@ namespace BlackJackApp.DataAccess.Interface
 {
     public interface IGameRepository<T> where T : class
     {
-        Task Add(Game game);
+        Task<int> Add(Game game);
         Task<IEnumerable<Game>> GetAll();
         Task<Game> GetLast();
     }

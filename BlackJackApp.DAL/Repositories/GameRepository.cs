@@ -8,16 +8,21 @@ using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities;
 using BlackJackApp.Entities.Entities;
 using Dapper;
+using Dapper.Contrib.Extensions;
 
 namespace BlackJackApp.Services
 {
     public class GameRepository<T> : IGameRepository<Game> where T : Game
     {
-        public async Task Add(Game game)
+        public async Task<int> Add(Game game)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-               await connection.ExecuteAsync("INSERT INTO Games DEFAULT VALUES");
+                string sql = "INSERT INTO Games OUTPUT Inserted.ID DEFAULT VALUES";
+
+                var id = await connection.QueryAsync<int>(sql, new { Game = game });
+                
+                return id.Single();
             }
         }
 

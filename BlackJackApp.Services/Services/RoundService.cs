@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using AutoMapper;
 using AutoMapper.Configuration;
+using System.Threading.Tasks;
+using BlackJackApp.Services.Services;
 
 namespace BlackJackApp.Services
 {
@@ -15,133 +17,82 @@ namespace BlackJackApp.Services
         private ICardRepository<Card> _cardRepository;
         private IGameRepository<Game> _gameRepository;
 
-        private Round _round;
-        private Card _card;
-        private NewUserViewModel _newUserViewModel;
-
-        private List<NewUserViewModel> _listOfNewUserViewModels;
-
         public RoundService(IRoundRepository<Round> roundRepository, ICardRepository<Card> cardRepository, IGameRepository<Game> gameRepository)
         {
             _roundRepository = roundRepository;
             _cardRepository = cardRepository;
             _gameRepository = gameRepository;
-            _listOfNewUserViewModels = new List<NewUserViewModel>();
         }
 
-        public List<NewUserViewModel> GiveCardToPlayer(List<NewUserViewModel> listOfUserViewModels)
+        public async Task<List<UserViewModel>> CreateRoundLogic(List<UserViewModel> listOfUserViewModels)
         {
-            NewUserViewModel _dealer;
-            List<NewUserViewModel> _listOfNewUserViewModels = new List<NewUserViewModel>();
-            int _dealerIndex = listOfUserViewModels.Count - 1;
+            var player = listOfUserViewModels[0];
+            var dealer = listOfUserViewModels[listOfUserViewModels.Count - 1];
 
-            if (listOfUserViewModels[0].IsTakeCard == true)
+            if (player.IsTakeCard == true)
             {
-                _listOfNewUserViewModels = CreateRound(listOfUserViewModels);
-
-                _dealer = _listOfNewUserViewModels[_dealerIndex];
-                _dealer = CheckDealer(_dealer);
-                _listOfNewUserViewModels[_dealerIndex] = _dealer;
-
-                _listOfNewUserViewModels = CheckForMoreThanTwentyOne(_listOfNewUserViewModels);
-
-                if (CheckForWinner(_listOfNewUserViewModels))
-                {
-                    return _listOfNewUserViewModels;
-                }
-
-                return _listOfNewUserViewModels;
-
+                listOfUserViewModels = await CreateRoundForAllPlayers(listOfUserViewModels);
+                dealer = await CheckDealer(dealer);
+                listOfUserViewModels[listOfUserViewModels.Count - 1] = dealer;
+                return CheckForWinner(listOfUserViewModels);
             }
 
-            _dealer = listOfUserViewModels[_dealerIndex];
-            _dealer = CheckDealer(_dealer);
-            listOfUserViewModels[_dealerIndex] = _dealer;
-            listOfUserViewModels = CheckForMoreThanTwentyOne(listOfUserViewModels);
+            return CheckForWinner(listOfUserViewModels);
+        }
 
-            listOfUserViewModels = FinalCountPoints(listOfUserViewModels);
 
+        public async Task<List<UserViewModel>> CreateRoundForAllPlayers(List<UserViewModel> listOfUserViewModels)
+        {
+            Round round;
+            Card card;
+
+            for (int i = 0; i < listOfUserViewModels.Count - 1; i++)
+            {
+                card = new Card();
+                card = await _cardRepository.GetRandom();
+
+                round = new Round();
+                round.PlayerId = listOfUserViewModels[i].PlayerId;
+                round.CardId = card.Id;
+                await _roundRepository.Add(round, listOfUserViewModels[i].GameId);
+
+                listOfUserViewModels[i].CurrentCard.Add(new CardServiceViewModel());
+                int lastCard = listOfUserViewModels[i].CurrentCard.Count - 1;
+
+                listOfUserViewModels[i].CurrentCard[lastCard].CardRank = card.CardRank.ToString();
+                listOfUserViewModels[i].CurrentCard[lastCard].CardSuit = card.CardSuit.ToString();
+                listOfUserViewModels[i].SumOfCards += card.Weight;
+            }
             return listOfUserViewModels;
-
-            //if (listOfUserViewModels[0].IsTakeCard == false)
-            //{
-            //    _dealer = listOfUserViewModels[_dealerIndex];
-            //    _dealer = CheckDealer(_dealer);
-            //    listOfUserViewModels[_dealerIndex] = _dealer;
-
-            //    listOfUserViewModels = FinalCountPoints(listOfUserViewModels);
-            //}
         }
 
-        public List<NewUserViewModel> CreateRound(List<NewUserViewModel> listOfMappedModels)
+        private async Task<UserViewModel> CreateRoundForDealer(UserViewModel dealer)
         {
-            for (int i = 0; i < listOfMappedModels.Count - 1; i++)
-            {
-                _card = new Card();
-                _card = _cardRepository.GetRandom();
+            var card = new Card();
+            card = await _cardRepository.GetRandom();
 
-                _round = new Round();
-                _round.PlayerId = listOfMappedModels[i].PlayerId;
-                _round.CardId = _card.Id;
+            var round = new Round();
+            round.PlayerId = dealer.PlayerId;
+            round.CardId = card.Id;
+            await _roundRepository.Add(round, dealer.GameId);
 
-                _listOfNewUserViewModels[i].CurrentCard.CardRank = _card.CardRank.ToString();
-                _listOfNewUserViewModels[i].CurrentCard.CardSuit = _card.CardSuit.ToString();
-                _listOfNewUserViewModels[i].SumOfCards += _card.Weight;
+            dealer.CurrentCard.Add(new CardServiceViewModel());
+            int lastCard = dealer.CurrentCard.Count - 1;
 
-                _roundRepository.Add(_round, listOfMappedModels[i].GameId);
-
-
-            }
-
-            return listOfMappedModels;
-        }
-
-        private NewUserViewModel CreateRoundForDealer(NewUserViewModel dealer)
-        {
-
-            _card = new Card();
-            _card = _cardRepository.GetRandom();
-
-            _round = new Round();
-            _round.PlayerId = dealer.PlayerId;
-            _round.CardId = _card.Id;
-
-            dealer.CurrentCard.CardRank = _card.CardRank.ToString();
-            dealer.CurrentCard.CardSuit = _card.CardSuit.ToString();
-            dealer.SumOfCards += _card.Weight;
-
-            //Console.WriteLine(dealer.ToString());
-
-            _roundRepository.Add(_round, dealer.GameId);
+            dealer.CurrentCard[lastCard].CardRank = card.CardRank.ToString();
+            dealer.CurrentCard[lastCard].CardSuit = card.CardSuit.ToString();
+            dealer.SumOfCards += card.Weight;
 
             return dealer;
         }
 
-        public List<NewUserViewModel> MapTheModel(List<UserViewModel> userViewModels)
-        {
-            for (int i = 0; i < userViewModels.Count; i++)
-            {
-                _newUserViewModel = new NewUserViewModel();
-
-                _newUserViewModel.GameId = userViewModels[i].GameId;
-                _newUserViewModel.PlayerId = userViewModels[i].PlayerId;
-                _newUserViewModel.Name = userViewModels[i].Name;
-                _newUserViewModel.IsWinner = userViewModels[i].IsWinner;
-                _newUserViewModel.SumOfCards = userViewModels[i].SumOfCards;
-
-                _listOfNewUserViewModels.Add(_newUserViewModel);
-            }
-
-            return _listOfNewUserViewModels;
-        }
-
-        private NewUserViewModel CheckDealer(NewUserViewModel dealer)
+        private async Task<UserViewModel> CheckDealer(UserViewModel dealer)
         {
             if (dealer.SumOfCards < 17)
             {
                 do
                 {
-                    dealer = CreateRoundForDealer(dealer);
+                    dealer = await CreateRoundForDealer(dealer);
                 }
                 while (dealer.SumOfCards < 17);
             }
@@ -149,48 +100,51 @@ namespace BlackJackApp.Services
             return dealer;
         }
 
-        private bool CheckForWinner(List<NewUserViewModel> listofuserViewModels)
+        private List<UserViewModel> CheckForWinner(List<UserViewModel> userViewModels)
         {
-            for (int i = 0; i < listofuserViewModels.Count; i++)
-            {
-                if (listofuserViewModels[i].SumOfCards == 21)
-                {
-                    listofuserViewModels[i].IsWinner = true;
-                    return true;
-                }
-            }
-            return false;
-        }
+            var dealer = userViewModels[userViewModels.Count - 1];
+            var player = userViewModels[0];
 
-        public List<NewUserViewModel> FinalCountPoints(List<NewUserViewModel> listOfNewUserViewModels)
-        {
-            var player = listOfNewUserViewModels[0];
-            var dealer = listOfNewUserViewModels[listOfNewUserViewModels.Count - 1];
+            if (dealer.SumOfCards == 21)
+            {
+                dealer.IsWinner = Enums.WinnerFlag.winner;
+                return userViewModels;
+            }
 
             if (player.SumOfCards == dealer.SumOfCards)
             {
-                Console.WriteLine("draWWW");
+                player.IsWinner = Enums.WinnerFlag.draw;
+                return userViewModels;
             }
 
-            if (player.SumOfCards > dealer.SumOfCards &&
-                player.SumOfCards <= 21 &&
-                dealer.SumOfCards <= 21)
+            for (int i = 0; i < userViewModels.Count - 1; i++)
             {
-                player.IsWinner = true;
-            }
-            dealer.IsWinner = true;
+                if (dealer.SumOfCards == userViewModels[i].SumOfCards &&
+                    dealer.SumOfCards == 21 &&
+                    userViewModels[i].SumOfCards == 21)
+                {
+                    userViewModels[i].IsWinner = Enums.WinnerFlag.draw;
+                }
 
-            return listOfNewUserViewModels;
+                if (userViewModels[i].SumOfCards == 21)
+                {
+                    userViewModels[i].IsWinner = Enums.WinnerFlag.winner;
+                }
+
+                if (userViewModels[0].SumOfCards > 21)
+                {
+                    FinalCount(userViewModels);
+                    return userViewModels;
+                }
+            }
+            return userViewModels;
         }
 
-        private List<NewUserViewModel> CheckForMoreThanTwentyOne(List<NewUserViewModel> players)
+        public List<UserViewModel> FinalCount(List<UserViewModel> userViewModels)
         {
-            if (players[0].SumOfCards > 21)
-            {
-                return FinalCountPoints(players);
-            }
-
-            return players;
+            userViewModels.Sort(new ComparerForUserView());
+            userViewModels[userViewModels.Count - 1].IsWinner = Enums.WinnerFlag.winner;
+            return userViewModels;
         }
     }
 }

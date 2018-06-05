@@ -12,52 +12,24 @@ namespace BlackJackApp.Test
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             ICardRepository<Card> cardRepository = new CardRepository<Card>();
             IGameRepository<Game> gameRepository = new GameRepository<Game>();
             IPlayerRepository<Player> playerRepository = new PlayerRepository<Player>();
             IRoundRepository<Round> roundRepository = new RoundRepository<Round>();
 
-            var gameServiceViewModelFromClient = new GameServiceViewModel { PlayerName = "Sam", BotQuantity = 5 };
-
+            GameService gameService = new GameService(gameRepository, playerRepository, roundRepository, cardRepository);
             RoundService roundService = new RoundService(roundRepository, cardRepository, gameRepository);
 
-            var gameCreator = new GameService(gameRepository, playerRepository, roundRepository, cardRepository);
+            var usermodels = await gameService.CreateGame(new GameServiceViewModel { PlayerName = "Scott", BotQuantity = 0 });
 
-            var listOfPlayers = gameCreator.CreateGame(gameServiceViewModelFromClient);
-
-            var player = playerRepository.GetLast();
-
-            Console.WriteLine("First Round");
-            foreach (var item in listOfPlayers)
+            foreach (var item in usermodels)
             {
                 Console.WriteLine(item.ToString());
-                Console.WriteLine("=============");
             }
 
-            var newlistOfPlayers = roundService.MapTheModel(listOfPlayers);
-
-            bool ask1;
-
-            do
-            {
-                Console.WriteLine("=======Enter :");
-                string ask = Console.ReadLine();
-                bool.TryParse(ask, out ask1);
-                Console.WriteLine("==============");
-                newlistOfPlayers[0].IsTakeCard = ask1;
-                var userModel = roundService.GiveCardToPlayer(newlistOfPlayers);
-                Console.WriteLine("n Round");
-                Console.WriteLine("=============");
-                Console.WriteLine("=============");
-                foreach (var item in userModel)
-                {
-                    Console.WriteLine(item.ToString());
-                    Console.WriteLine("=============");
-                }
-            }
-            while (ask1);
+            
         }
     }
 }
