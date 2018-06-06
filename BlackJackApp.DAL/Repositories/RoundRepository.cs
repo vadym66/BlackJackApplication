@@ -8,16 +8,19 @@ using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities;
 using BlackJackApp.Entities.Entities;
 using Dapper;
+using Dapper.Contrib.Extensions;
 
 namespace BlackJackApp.Services
 {
     public class RoundRepository<T> : IRoundRepository<Round> where T : Round
     {
-        public async Task Add(Round round, int gameId)
+        public async Task<int> Add(Round round, int gameId)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                await connection.ExecuteAsync("INSERT INTO Rounds(Player_Id, Card_Id, Game_Id) VALUES(@PlayerId, @CardId, @gameId)", new {round.PlayerId, round.CardId, gameId });
+                var id = await connection.QueryAsync<int>("INSERT INTO Rounds(Player_Id, Card_Id, Game_Id) OUTPUT Inserted.ID VALUES(@PlayerId, @CardId, @gameId)",
+                                                            new {round.PlayerId, round.CardId, gameId });
+                return id.Single();
             }
         }
     }

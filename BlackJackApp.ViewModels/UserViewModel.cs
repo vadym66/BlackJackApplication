@@ -33,9 +33,9 @@ namespace BlackJackApp.ViewModels
             CurrentCard = new List<CardServiceViewModel>();
         }
 
-        public override string ToString()
-        {
-            return $"Name: {Name}  PlayeriD: {PlayerId}  GameId{GameId}  Sum of cards: {SumOfCards}  Winner: {IsWinner}";
-        }
+        //public override string ToString()
+        //{
+        //    return $"Name: {Name}  PlayeriD: {PlayerId}  GameId{GameId}  Sum of cards: {SumOfCards}  Winner: {IsWinner}";
+        //}
     }
 }

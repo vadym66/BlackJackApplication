@@ -8,9 +8,9 @@ namespace BlackJackApp.ViewModels
 {
     public class HistoryServiceViewModel
     {
-        public void PrintHistory()
-        {
-            Console.WriteLine("history must be here...");
-        }
+        public string Name { get; set; }
+
+        public List<CardServiceViewModel> Cards { get; set; }
+
     }
 }

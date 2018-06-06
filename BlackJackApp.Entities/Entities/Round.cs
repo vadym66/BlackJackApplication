@@ -7,5 +7,10 @@
         public int PlayerId { get; set; }
 
         public int CardId { get; set; }
+
+        public override string ToString()
+        {
+            return $"RoundId: {Id}  PlayerId: {PlayerId}  CardId: {CardId}";
+        }
     }
 }

@@ -10,6 +10,6 @@ namespace BlackJackApp.DataAccess.Interface
 {
     public interface IRoundRepository<T> where T : class
     {
-        Task Add(Round round, int gameId);
+        Task<int> Add(Round round, int gameId);
     }
 }

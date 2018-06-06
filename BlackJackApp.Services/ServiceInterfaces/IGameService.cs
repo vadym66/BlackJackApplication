@@ -10,6 +10,6 @@ namespace BlackJackApp.Services.ServiceInterfaces
 {
     public interface IGameService<T> where T : class
     {
-        Task<List<UserViewModel>> CreateGame(GameServiceViewModel viewFromUI);
+        Task<GameServiceViewModel> CreateGame(GameServiceViewModel viewFromUI);
     }
 }
