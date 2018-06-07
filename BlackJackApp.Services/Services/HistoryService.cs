@@ -1,4 +1,5 @@
-﻿using BlackJackApp.DataAccess.Interface;
+﻿using BlackJackApp.DAL.Repositories;
+using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.ViewModels;
 using System;
@@ -11,23 +12,27 @@ namespace BlackJackApp.Services.Services
 {
     public class HistoryService
     {
-        private IRoundRepository<Round> _roundRepository;
-        private IGameRepository<Game> _gameRepository;
-        private IPlayerRepository<Player> _playerRepository;
-        private ICardRepository<Card> _cardRepository;
+        private HistoryRepository _historyRepository = new HistoryRepository();
 
-        public HistoryService(IRoundRepository<Round> roundRepository, IGameRepository<Game> gameRepository, 
-                                IPlayerRepository<Player> playerRepository, ICardRepository<Card> cardRepository)
+        public HistoryService()
         {
-            _roundRepository = roundRepository;
-            _gameRepository = gameRepository;
-            _playerRepository = playerRepository;
-            _cardRepository = cardRepository;
+            
+        }
+                
+        public async Task<IEnumerable<Player>> GetGames()
+        {
+            return await _historyRepository.GetGame();
         }
 
-        public HistoryServiceViewModel GetLastGame()
+        public async Task<GameDetailsViewModel> GetGameDetails(int gameId)
         {
-            return new HistoryServiceViewModel();
+            var rounds = await _historyRepository.GetRound(gameId);
+
+            var query = from r in rounds
+                        group r by r.PlayerId into membersByGroupCode
+                        select membersByGroupCode;
         }
+
+
     }
 }

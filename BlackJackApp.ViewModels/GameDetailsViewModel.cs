@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.ViewModels
 {
-    public class HistoryServiceViewModel
+    public class GameDetailsViewModel
     {
         public int PlayerId { get; set; }
 
-        public string Name { get; set; }
-
-        public List<CardServiceViewModel> Cards { get; set; }
+        public List<C> MyProperty { get; set; }
     }
 }

@@ -218,13 +218,13 @@ namespace BlackJackApp.Services
         }
 
         private async Task AddNextRoundToDataBase(UserViewModel player, int gameId)
-        { 
-                var nextRound = new Round();
+        {
+            var nextRound = new Round();
 
-                nextRound.PlayerId = player.PlayerId;
-                nextRound.CardId = player.CurrentCard[player.CurrentCard.Count - 1].CardId;
-                nextRound.Id = await _roundRepository.Add(nextRound, player.GameId);
-                _rounds.Add(nextRound);
+            nextRound.PlayerId = player.PlayerId;
+            nextRound.CardId = player.CurrentCard[player.CurrentCard.Count - 1].CardId;
+            nextRound.Id = await _roundRepository.Add(nextRound, player.GameId);
+            _rounds.Add(nextRound);
         }
 
         private async Task<UserViewModel> CreateRoundForDealer(UserViewModel dealer)

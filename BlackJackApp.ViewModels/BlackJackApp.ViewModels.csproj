@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CardServiceViewModel.cs" />
     <Compile Include="Enums\WinnerFlag.cs" />
+    <Compile Include="GameDetailsViewModel.cs" />
     <Compile Include="GameServiceViewModel.cs" />
     <Compile Include="HistoryServiceViewModel.cs" />
     <Compile Include="UserViewModel.cs" />
