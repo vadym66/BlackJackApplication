@@ -9,7 +9,5 @@ namespace BlackJackApp.ViewModels
     public class GameDetailsViewModel
     {
         public int PlayerId { get; set; }
-
-        public List<C> MyProperty { get; set; }
     }
 }

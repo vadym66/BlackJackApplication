@@ -39,6 +39,9 @@
     <Reference Include="Dapper.Contrib, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.Contrib.1.50.5\lib\net451\Dapper.Contrib.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper.Mapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Mapper.2.0.0\lib\net451\Dapper.Mapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -55,7 +58,10 @@
     <Compile Include="Enums\WinnerFlag.cs" />
     <Compile Include="GameDetailsViewModel.cs" />
     <Compile Include="GameServiceViewModel.cs" />
+    <Compile Include="GameViewModel.cs" />
     <Compile Include="HistoryServiceViewModel.cs" />
+    <Compile Include="RoundViewModel.cs" />
+    <Compile Include="UserHistoryViewModel.cs" />
     <Compile Include="UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

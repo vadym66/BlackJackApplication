@@ -2,6 +2,7 @@
 using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.Services;
+using BlackJackApp.Services.Services;
 using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,17 +20,23 @@ namespace BlackJackApp.Test
             IGameRepository<Game> gameRepository = new GameRepository<Game>();
             IPlayerRepository<Player> playerRepository = new PlayerRepository<Player>();
             IRoundRepository<Round> roundRepository = new RoundRepository<Round>();
-            HistoryRepository historyRepository = new HistoryRepository();
 
-            var games = await historyRepository.GetGame();
-            var rounds = await historyRepository.GetRound(3);
-            
+            GameService service = new GameService(gameRepository, playerRepository, roundRepository, cardRepository);
 
-            var query = from r in rounds
-                        group r by r.PlayerId into membersByGroupCode
-                        select membersByGroupCode;
+            var uiViewModel = new GameServiceViewModel { PlayerName = "Scott", BotQuantity = 2 };
+            var result = await service.StartGame(uiViewModel);
 
-            
+
+            foreach (var user in result.Users)
+            {
+                Console.WriteLine(user.UserName);
+                foreach (var card in user.Cards)
+                {
+                    Console.WriteLine($"{ card.CardRank} : { card.CardSuit}");
+                }
+                Console.WriteLine("========================");
+            }
+            Console.ReadKey();
         }
     }
 }

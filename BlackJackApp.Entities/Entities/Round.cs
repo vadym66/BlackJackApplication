@@ -11,9 +11,15 @@ namespace BlackJackApp.Entities.Entities
 
         public int CardId { get; set; }
 
+        public virtual Card Card { get; set; }
+
+        public virtual Player Player { get; set; }
+
         public override string ToString()
+
+       
         {
-            return $"RoundId: {Id}  PlayerId: {PlayerId}  CardId: {CardId} {Cards.ToString()}";
+            return $"RoundId: {Id}  PlayerId: {PlayerId}  CardId: {CardId} ";
         }
     }
 }

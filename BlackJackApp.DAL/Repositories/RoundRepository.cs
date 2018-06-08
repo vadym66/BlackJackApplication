@@ -18,7 +18,7 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                var id = await connection.QueryAsync<int>("INSERT INTO Rounds(Player_Id, Card_Id, Game_Id) OUTPUT Inserted.ID VALUES(@PlayerId, @CardId, @gameId)",
+                var id = await connection.QueryAsync<int>("INSERT INTO Rounds(PlayerId, CardId, GameId) OUTPUT Inserted.ID VALUES(@PlayerId, @CardId, @gameId)",
                                                             new {round.PlayerId, round.CardId, gameId });
                 return id.Single();
             }

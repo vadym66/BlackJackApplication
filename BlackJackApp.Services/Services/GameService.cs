@@ -17,8 +17,7 @@ namespace BlackJackApp.Services
         private IRoundRepository<Round> _roundRepository;
         private IPlayerRepository<Player> _playerRepository;
         private ICardRepository<Card> _cardRepository;
-
-        private List<Player> listOfPlayers = new List<Player>();
+        private List<Round> _rounds;
 
         public GameService(IGameRepository<Game> gameRepository,
                             IPlayerRepository<Player> playerRepository,
@@ -29,100 +28,106 @@ namespace BlackJackApp.Services
             _playerRepository = playerRepository;
             _roundRepository = roundRepository;
             _cardRepository = cardRepository;
+            _rounds = new List<Round>();
         }
 
-        public async Task<GameServiceViewModel> CreateGame(GameServiceViewModel viewFromUI) // Creating first round 
+        public async Task<RoundViewModel> StartGame(GameServiceViewModel viewFromUI) // Creating first round 
+        {
+            var gameId = await CreateGame(viewFromUI.PlayerName, viewFromUI.BotQuantity);
+
+            await CreateHuman(viewFromUI.PlayerName, gameId);
+            if (viewFromUI.BotQuantity != 0)
+            {
+                await CreateBots(viewFromUI.BotQuantity, gameId);
+            }
+            await CreateDealer(gameId);
+
+            return MappingToViewModel(_rounds);
+        }
+
+        private async Task<int> CreateGame(string name, int botNumber)
         {
             var game = new Game();
             game.Id = await _gameRepository.Add(game);
-
-            viewFromUI.GameId = game.Id;
-
-            return viewFromUI;
-
-            
+            return game.Id;
         }
 
-        private async Task AddFirstRoundToDataBase(List<UserViewModel> players, int gameId)
+        private async Task CreateHuman(string name, int gameId)
         {
-            for (int i = 0; i < players.Count; i++)
+            Player player = new Player { Name = name };
+            player.Id = await _playerRepository.Add(player, gameId);
+
+            await CreateFirstRound(player, gameId);
+        }
+
+        private async Task CreateBots(int botNumber, int gameId)
+        {
+            IEnumerable<Player> players;
+
+            players = await _playerRepository.GetBots(botNumber);
+            foreach (var player in players)
             {
-                var round = new Round();
-
-                round.PlayerId = players[i].PlayerId;
-                round.CardId = players[i].CurrentCard[0].CardId;
-                await _roundRepository.Add(round, players[i].GameId);
-
-                round = new Round();
-                round.PlayerId = players[i].PlayerId;
-                round.CardId = players[i].CurrentCard[1].CardId;
-                await _roundRepository.Add(round, players[i].GameId);
+                await CreateFirstRound(player, gameId);
             }
         }
 
-        private List<UserViewModel> CheckForWinner(List<UserViewModel> userViewModels)
+        private async Task CreateDealer(int gameId)
         {
-            var dealer = userViewModels[userViewModels.Count - 1];
-
-            if (dealer.SumOfCards == 21)
-            {
-                dealer.IsWinner = Enums.WinnerFlag.winner;
-                return userViewModels;
-            }
-
-            for (int i = 0; i < userViewModels.Count - 1; i++)
-            {
-                if (dealer.SumOfCards == userViewModels[i].SumOfCards &&
-                    dealer.SumOfCards == 21 &&
-                    userViewModels[i].SumOfCards == 21)
-                {
-                    userViewModels[i].IsWinner = Enums.WinnerFlag.draw;
-                }
-
-                if (userViewModels[i].SumOfCards == 21)
-                {
-                    userViewModels[i].IsWinner = Enums.WinnerFlag.winner;
-                }
-
-                if (userViewModels[0].SumOfCards > 21)
-                {
-                    FinalCount(userViewModels);
-                    return userViewModels;
-                }
-            }
-            return userViewModels;
+            var dealer = await _playerRepository.GetDealer();
+            await CreateFirstRound(dealer, gameId);
         }
 
-        private List<UserViewModel> FinalCount(List<UserViewModel> userViewModels)
+        private async Task CreateFirstRound(Player player,int gameId)
         {
-            userViewModels.Sort(new ComparerForUserView());
-            userViewModels[userViewModels.Count - 1].IsWinner = Enums.WinnerFlag.winner;
-            return userViewModels;
+            var firstRound = new Round();
+            var secondRound = new Round();
+
+            var firstCard = new Card();
+            var secondCard = new Card();
+
+            firstCard = await _cardRepository.GetRandom();
+            secondCard = await _cardRepository.GetRandom();
+
+            firstRound.PlayerId = player.Id;
+            firstRound.CardId = firstCard.Id;
+            firstRound.Id = await _roundRepository.Add(firstRound, gameId);
+
+            secondRound.PlayerId = player.Id;
+            secondRound.CardId = secondCard.Id;
+            secondRound.Id = await _roundRepository.Add(secondRound, gameId);
+
+            firstRound.Card = firstCard;
+            firstRound.Player = player;
+            _rounds.Add(firstRound);
+
+            secondRound.Card = secondCard;
+            secondRound.Player = player;
+            _rounds.Add(secondRound);
         }
 
-        
-
-        
-
-        private async Task<List<Player>> CreatePlayerBots(int quantityBot = 2)
+        private RoundViewModel MappingToViewModel(List<Round> rounds)
         {
-            var listOfPlayers = new List<Player>();
+            var result = rounds.GroupBy(p => p.Player.Name);
 
-            if (quantityBot != 0) // Bot Creating
+            var roundViewModelList = new RoundViewModel();
+
+            foreach (var round in result)
             {
-                for (int i = 0; i < quantityBot; i++)
+                var userModel = new UserViewModel();
+                userModel.UserName = round.Key;
+
+                foreach (var card in round)
                 {
-                    var playerBot = new Player { Name = $"Bot{i}" };
-                    playerBot.Id = await _playerRepository.Add(playerBot);
+                    var cardViewModel = new CardServiceViewModel();
 
-                    listOfPlayers.Add(playerBot);
+                    cardViewModel.CardRank = card.Card.CardRank.ToString();
+                    cardViewModel.CardSuit = card.Card.CardSuit.ToString();
+
+                    userModel.Cards.Add(cardViewModel);
                 }
+                roundViewModelList.Users.Add(userModel);
             }
-            return listOfPlayers;
+            return roundViewModelList;
         }
-
-
-
-
     }
 }

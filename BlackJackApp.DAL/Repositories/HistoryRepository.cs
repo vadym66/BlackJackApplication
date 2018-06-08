@@ -1,56 +1,48 @@
 ﻿using BlackJackApp.DAL.Dapper;
 using BlackJackApp.Entities.Entities;
 using Dapper;
+using Dapper.Contrib.Extensions;
+using Dapper.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BlackJackApp.DAL.Repositories
 {
     public class HistoryRepository
     {
-        public async Task<IEnumerable<Player>> GetGame()
+        public async Task<IEnumerable<Player>> GetGame(int gameId)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                return await connection.QueryAsync<Player>(@"SELECT Players.Name
-                                                            FROM PlayerGames
-                                                            LEFT JOIN Players ON PlayerGames.Player_Id = Players.Id
-                                                            WHERE PlayerGames.Game_Id = 3");
+                var sql = @"SELECT Players.Name
+                            FROM PlayerGames
+                            LEFT JOIN Players ON PlayerGames.Player_Id = Players.Id
+                            WHERE PlayerGames.Game_Id = @Id";
+
+                return await connection.QueryAsync<Player>(sql, new { Id = gameId  });
             }
         }
 
-        public async Task<List<Round>> GetRound(int gameId)
+        public async Task<IEnumerable<Round>> GetRounds(int gameId)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                var sql = @"
-                        SELECT *
-                        FROM Rounds
-                        INNER JOIN Cards ON Rounds.CardId = Cards.Id
-                        WHERE Rounds.GameId = @gameid";
+                var sql = @"SELECT *
+                            FROM Rounds
+                            JOIN Players ON Rounds.PlayerId = Players.Id
+                            JOIN Cards ON Rounds.CardId = Cards.Id
+                            WHERE Rounds.GameId = @Id";
 
-                var roundDictionary = new Dictionary<int, Round>();
-
-                var query = connection.QueryAsync<Round, Card, Round>(
-                                                    sql, 
-                                                    (round, cards) =>
-                                                    {
-                                                        Round roundEntry;
-
-                                                        if (!roundDictionary.TryGetValue(round.Id,out roundEntry))
-                                                        {
-                                                            roundEntry = round;
-                                                            roundEntry.Cards = new List<Card>();
-                                                            roundDictionary.Add(roundEntry.Id, roundEntry);
-                                                        }
-
-                                                        roundEntry.Cards.Add(cards);
-                                                        return roundEntry;
-                                                    }, new { gameId = gameId },
-                                                    splitOn: "CardId").Result.Distinct().ToList();
+                var query = await connection.QueryAsync<Round, Player, Card, Round>(sql, (round, player, card) =>
+                                                                              {
+                                                                                  round.Card = card;
+                                                                                  round.Player = player;
+                                                                                  return round;
+                                                                              }, new { Id = gameId }); 
                 return  query;
             }
         }

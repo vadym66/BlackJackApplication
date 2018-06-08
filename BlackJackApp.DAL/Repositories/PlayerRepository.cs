@@ -16,7 +16,7 @@ namespace BlackJackApp.Services
     public class PlayerRepository<T> : IPlayerRepository<Player> where T : Player
     {
         //insert Player to database
-        public async Task<int> Add(Player player)
+        public async Task<int> Add(Player player, int gameId)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
@@ -29,6 +29,28 @@ namespace BlackJackApp.Services
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
                 return await connection.QueryAsync<Player>("SELECT * FROM Players");
+            }
+        }
+
+        public async Task<IEnumerable<Player>> GetBots(int botNumber)
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                var sql = "SELECT TOP (@BotNumber) FROM Players WHERE Players.Id  BETWEEN 2 AND 5";
+
+                return await connection.QueryAsync<Player>(sql, new { BotNumber = botNumber });
+            }
+        }
+
+        public async Task<Player> GetDealer()
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                var sql = @"SELECT Players.Name
+                            FROM Players
+                            WHERE Players.Id = 1";
+
+                return await connection.QuerySingleAsync<Player>(sql);
             }
         }
     }

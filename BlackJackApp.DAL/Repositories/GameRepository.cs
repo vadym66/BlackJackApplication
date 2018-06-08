@@ -14,11 +14,24 @@ namespace BlackJackApp.Services
 {
     public class GameRepository<T> : IGameRepository<Game> where T : Game
     {
+        public async Task<IEnumerable<Player>> GetGame(int gameId)
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                var sql = @"SELECT Players.Name
+                            FROM PlayerGames
+                            LEFT JOIN Players ON PlayerGames.Player_Id = Players.Id
+                            WHERE PlayerGames.Game_Id = @Id";
+
+                return await connection.QueryAsync<Player>(sql, new { });
+            }
+        }
+
         public async Task<int> Add(Game game)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                string sql = "INSERT INTO Games OUTPUT Inserted.ID DEFAULT VALUES";
+                var sql = @"INSERT INTO Games OUTPUT Inserted.ID DEFAULT VALUES";
 
                 var id = await connection.QueryAsync<int>(sql, new { Game = game });
                 
@@ -30,7 +43,9 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                return await connection.QueryAsync<Game>("SELECT * FROM Games");
+                var sql = "SELECT * FROM Games";
+
+                return await connection.QueryAsync<Game>(sql);
             }
         }
 
@@ -38,7 +53,9 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                return await connection.QuerySingleAsync<Game>("SELECT TOP 1 * FROM Games ORDER BY Id DESC");
+                var sql = "SELECT TOP 1 * FROM Games ORDER BY Id DESC";
+
+                return await connection.QuerySingleAsync<Game>(sql);
             }
         }
     }

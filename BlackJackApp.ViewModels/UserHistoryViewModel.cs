@@ -1,20 +1,14 @@
-﻿using BlackJackApp.Services.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
 
 namespace BlackJackApp.ViewModels
 {
-    public class UserViewModel 
+    public class UserHistoryViewModel
     {
         public string UserName { get; set; }
 
         public List<CardServiceViewModel> Cards { get; set; }
 
-        public UserViewModel()
+        public UserHistoryViewModel()
         {
             Cards = new List<CardServiceViewModel>();
         }
