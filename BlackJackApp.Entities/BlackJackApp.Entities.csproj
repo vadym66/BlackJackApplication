@@ -67,6 +67,7 @@
     <Compile Include="Enums\CardSuit.cs" />
     <Compile Include="Enums\CardRank.cs" />
     <Compile Include="Entities\Player.cs" />
+    <Compile Include="Enums\EntityPlayerRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

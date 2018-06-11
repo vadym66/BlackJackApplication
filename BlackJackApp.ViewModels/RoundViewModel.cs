@@ -5,6 +5,8 @@ namespace BlackJackApp.Services
 {
     public class RoundViewModel
     {
+        public bool isResultComplete { get; set; }
+
         public List<UserViewModel> Users { get; set; }
 
         public RoundViewModel()

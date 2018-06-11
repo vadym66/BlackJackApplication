@@ -62,12 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ServiceInterfaces\IGameService.cs" />
-    <Compile Include="ServiceInterfaces\IRoundService.cs" />
-    <Compile Include="Services\ComparerForUserView.cs" />
+    <Compile Include="ServiceInterfaces\IHistoryService.cs" />
     <Compile Include="Services\GameService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\HistoryService.cs" />
-    <Compile Include="Services\RoundService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlackJackApp.DAL\BlackJackApp.DataAccess.csproj">

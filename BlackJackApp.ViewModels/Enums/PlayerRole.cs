@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackApp.ViewModels
+namespace BlackJackApp.ViewModels.Enums
 {
-    public class GameDetailsViewModel
+    public enum PlayerRole
     {
-        public int PlayerId { get; set; }
+        isHuman = 0,
+        isBot = 1,
+        isDealer = 2
     }
 }

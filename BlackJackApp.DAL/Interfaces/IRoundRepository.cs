@@ -11,5 +11,6 @@ namespace BlackJackApp.DataAccess.Interface
     public interface IRoundRepository<T> where T : class
     {
         Task<int> Add(Round round, int gameId);
+        Task<IEnumerable<Round>> GetRounds(int gameId);
     }
 }

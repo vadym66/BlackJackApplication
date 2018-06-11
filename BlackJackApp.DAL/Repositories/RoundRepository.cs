@@ -23,5 +23,25 @@ namespace BlackJackApp.Services
                 return id.Single();
             }
         }
+
+        public async Task<IEnumerable<Round>> GetRounds(int gameId)
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                var sql = @"SELECT *
+                            FROM Rounds
+                            JOIN Players ON Rounds.PlayerId = Players.Id
+                            JOIN Cards ON Rounds.CardId = Cards.Id
+                            WHERE Rounds.GameId = @Id";
+
+                var query = await connection.QueryAsync<Round, Player, Card, Round>(sql, (round, player, card) =>
+                {
+                    round.Card = card;
+                    round.Player = player;
+                    return round;
+                }, new { Id = gameId });
+                return query;
+            }
+        }
     }
 }

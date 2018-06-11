@@ -1,5 +1,4 @@
-﻿using BlackJackApp.DAL.Repositories;
-using BlackJackApp.DataAccess.Interface;
+﻿using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.ViewModels;
 using System;
@@ -12,27 +11,18 @@ namespace BlackJackApp.Services.Services
 {
     public class HistoryService
     {
-        private HistoryRepository _historyRepository = new HistoryRepository();
+        private IGameRepository<Game> _gameRepository;
+        private IRoundRepository<Round> _roundRepository;
 
-        public HistoryService()
+        public HistoryService(IGameRepository<Game> gameRepository, IRoundRepository<Round> roundRepository)
         {
-            
-        }
-                
-        public async Task<IEnumerable<Player>> ShowParticularHistoryGame(int gameId)
-        {
-            var query = await _historyRepository.GetGame(gameId);
-            if (!query.Any())
-            {
-                throw new Exception("There is no such game");
-            }
-
-            return query;
+            _gameRepository = gameRepository;
+            _roundRepository = roundRepository;
         }
 
         public async Task<IEnumerable<Round>> GetAllRoundsFromParticularGame(int gameId)
         {
-            var query = await _historyRepository.GetRounds(gameId);
+            var query = await _roundRepository.GetRounds(gameId);
             if (!query.Any())
             {
                 throw new Exception("There is no such game");

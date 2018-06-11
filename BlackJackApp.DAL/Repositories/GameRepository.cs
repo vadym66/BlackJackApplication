@@ -14,19 +14,6 @@ namespace BlackJackApp.Services
 {
     public class GameRepository<T> : IGameRepository<Game> where T : Game
     {
-        public async Task<IEnumerable<Player>> GetGame(int gameId)
-        {
-            using (var connection = ConnectionFactory.GetOpenDbConnection())
-            {
-                var sql = @"SELECT Players.Name
-                            FROM PlayerGames
-                            LEFT JOIN Players ON PlayerGames.Player_Id = Players.Id
-                            WHERE PlayerGames.Game_Id = @Id";
-
-                return await connection.QueryAsync<Player>(sql, new { });
-            }
-        }
-
         public async Task<int> Add(Game game)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
@@ -58,5 +45,19 @@ namespace BlackJackApp.Services
                 return await connection.QuerySingleAsync<Game>(sql);
             }
         }
+
+        public async Task<IEnumerable<Player>> Get(int gameId)
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                var sql = @"SELECT Players.Name
+                            FROM PlayerGames
+                            LEFT JOIN Players ON PlayerGames.Player_Id = Players.Id
+                            WHERE PlayerGames.Game_Id = @Id";
+
+                return await connection.QueryAsync<Player>(sql, new { Id = gameId });
+            }
+        }
+
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlackJackApp.Services.Enums
+namespace BlackJackApp.Entities.Enums
 {
-    public enum WinnerFlag
+    public enum EntityPlayerRole
     {
-        isNotWinner = 0,
-        isWinner = 1,
-        isDraw = 2
+        isHuman = 0,
+        isBot = 1,
+        isDealer = 2
     }
 }

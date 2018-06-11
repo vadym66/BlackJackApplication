@@ -11,6 +11,8 @@ namespace BlackJackApp.Entities.Entities
 
         public int CardId { get; set; }
 
+        public int GameId { get; set; }
+
         public virtual Card Card { get; set; }
 
         public virtual Player Player { get; set; }
