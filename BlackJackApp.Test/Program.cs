@@ -53,21 +53,40 @@ namespace BlackJackApp.Test
             //    Console.WriteLine("========================");
             //}
             //Console.ReadKey();
+
+            //var final = await service.FinalPointsCount(resultAfteNextRound.Users);
+
+            //foreach (var user in final.Users)
+            //{
+            //    Console.WriteLine(user.ToString());
+            //    foreach (var card in user.Cards)
+            //    {
+            //        Console.WriteLine($"{ card.CardRank} : { card.CardSuit}");
+            //    }
+            //    Console.WriteLine("========================");
+            //}
             #endregion
-
-            var query = await history.GetAllRoundsFromParticularGame(77);
-
-            var roundhistory = history.CreateUserHistoryVM(query);
-
-            foreach (var round in roundhistory)
+            #region
+            try
             {
-                Console.WriteLine(round.UserName);
-                foreach (var card in round.Cards)
-                {
-                    Console.WriteLine($"{card.CardRank} : {card.CardSuit}");
-                }
+                var query = await history.GetAllRoundsFromParticularGame(100);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
+            //var roundhistory = history.CreateUserHistoryVM(query);
+
+            //foreach (var round in roundhistory)
+            //{
+            //    Console.WriteLine(round.UserName);
+            //    foreach (var card in round.Cards)
+            //    {
+            //        Console.WriteLine($"{card.CardRank} : {card.CardSuit}");
+            //    }
+            //}
+            #endregion
         }
     }
 }

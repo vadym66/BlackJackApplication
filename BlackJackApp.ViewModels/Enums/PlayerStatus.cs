@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Services.Enums
 {
-    public enum WinnerFlag
+    public enum PlayerStatus
     {
-        isNotWinner = 0,
-        isWinner = 1,
-        isDraw = 2
+        DefaultValue = 0,
+        Lose = 1,
+        Winner = 2,
+        Draw = 3
     }
 }

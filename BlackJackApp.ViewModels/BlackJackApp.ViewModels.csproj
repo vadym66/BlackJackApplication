@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="CardServiceViewModel.cs" />
     <Compile Include="Enums\PlayerRole.cs" />
-    <Compile Include="Enums\WinnerFlag.cs" />
+    <Compile Include="Enums\PlayerStatus.cs" />
     <Compile Include="GameServiceViewModel.cs" />
     <Compile Include="RoundViewModel.cs" />
     <Compile Include="UserHistoryViewModel.cs" />

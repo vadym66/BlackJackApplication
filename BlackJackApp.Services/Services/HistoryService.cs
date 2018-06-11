@@ -46,14 +46,13 @@ namespace BlackJackApp.Services.Services
                 {
                     var cardViewModel = new CardServiceViewModel();
 
-                    cardViewModel.CardRank = card.Card.CardRank.ToString();
-                    cardViewModel.CardSuit = card.Card.CardSuit.ToString();
+                    cardViewModel.CardRank = card.Card.Rank.ToString();
+                    cardViewModel.CardSuit = card.Card.Suit.ToString();
 
                     userModel.Cards.Add(cardViewModel);
                 }
                 userModelList.Add(userModel);
             }
-
             return userModelList;
         }
 

@@ -11,15 +11,15 @@ namespace BlackJackApp.Entities.Entities
     {
         public int Id { get; set; }
 
-        public CardRank CardRank { get; set; }
+        public CardRank Rank { get; set; }
 
-        public CardSuit CardSuit { get; set; }
+        public CardSuit Suit { get; set; }
 
         public int Weight { get; set; }
 
         public override string ToString()
         {
-            return $"{CardRank} : {CardSuit}  //id: {Id}";
+            return $"{Rank} : {Suit}  //id: {Id}";
         }
     }
 }

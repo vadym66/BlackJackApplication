@@ -8,8 +8,8 @@ namespace BlackJackApp.Entities.Enums
 {
     public enum EntityPlayerRole
     {
-        isHuman = 0,
-        isBot = 1,
-        isDealer = 2
+        Human = 0,
+        Bot = 1,
+        Dealer = 2
     }
 }

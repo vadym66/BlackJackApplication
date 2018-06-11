@@ -21,7 +21,7 @@ namespace BlackJackApp.ViewModels
 
         public string UserName { get; set; }
 
-        public WinnerFlag winnerFlag { get; set; } = WinnerFlag.isNotWinner;
+        public PlayerStatus PlayerStatus { get; set; }
 
         public PlayerRole PlayerRole { get; set; }
 
@@ -30,11 +30,6 @@ namespace BlackJackApp.ViewModels
         public UserViewModel()
         {
             Cards = new List<CardServiceViewModel>();
-        }
-
-        public override string ToString()
-        {
-            return $"Name: {UserName}  CardSum{CardSum}";
         }
     }
 }

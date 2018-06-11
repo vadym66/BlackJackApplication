@@ -28,7 +28,10 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                return await connection.QueryAsync<Player>("SELECT * FROM Players");
+                var sql = @"SELECT * 
+                            FROM Players";
+
+                return await connection.QueryAsync<Player>(sql);
             }
         }
 
@@ -36,7 +39,8 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                var sql = "SELECT TOP (@BotNumber) * FROM Players WHERE Players.Id  BETWEEN 2 AND 5";
+                var sql = @"SELECT TOP (@BotNumber) * 
+                            FROM Players WHERE Players.Id  BETWEEN 2 AND 5";
 
                 return await connection.QueryAsync<Player>(sql, new { BotNumber = botNumber });
             }

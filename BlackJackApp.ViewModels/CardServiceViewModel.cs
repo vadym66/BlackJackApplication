@@ -9,10 +9,5 @@
         public string CardSuit { get; set; }
 
         public int CardWeight { get; set; }
-
-        public override string ToString()
-        {
-            return $"CardId: {CardId} {CardRank}/{CardSuit}";
-        }
     }
 }

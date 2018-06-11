@@ -18,9 +18,10 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                var id = await connection.QueryAsync<int>("INSERT INTO Rounds(PlayerId, CardId, GameId) OUTPUT Inserted.ID VALUES(@PlayerId, @CardId, @gameId)",
-                                                            new {round.PlayerId, round.CardId, gameId });
-                return id.Single();
+                var sql = @"INSERT INTO Rounds(PlayerId, CardId, GameId) 
+                            OUTPUT Inserted.ID VALUES(@PlayerId, @CardId, @gameId)";
+
+                return (await connection.QueryAsync<int>(sql, new {round.PlayerId, round.CardId, gameId })).Single();
             }
         }
 
@@ -34,13 +35,13 @@ namespace BlackJackApp.Services
                             JOIN Cards ON Rounds.CardId = Cards.Id
                             WHERE Rounds.GameId = @Id";
 
-                var query = await connection.QueryAsync<Round, Player, Card, Round>(sql, (round, player, card) =>
-                {
-                    round.Card = card;
-                    round.Player = player;
-                    return round;
-                }, new { Id = gameId });
-                return query;
+                return await connection.QueryAsync<Round, Player, Card, Round>(sql, 
+                                                                              (round, player, card) =>
+                                                                                    {
+                                                                                        round.Card = card;
+                                                                                        round.Player = player;
+                                                                                        return round;
+                                                                                    }, new { Id = gameId });
             }
         }
     }
