@@ -13,9 +13,22 @@
         <dt>
             @foreach (var round in Model.Users)
             {
+                @*@Html.HiddenFor(r => round)
+                @Html.HiddenFor(r => round.UserName)
+                @Html.HiddenFor(r => round.GameId)
+                @Html.HiddenFor(r => round.PlayerId)
+                @Html.HiddenFor(r => round.RoundId)
+                @Html.HiddenFor(r => round.PlayerStatus)
+                @Html.HiddenFor(r => round.PlayerRole)
+                @Html.HiddenFor(r => round.CardSum)*@
                 <li><b>@round.UserName:</b></li>
                 foreach (var card in round.Cards)
                 {
+                    @*@Html.HiddenFor(r => card)
+                    @Html.HiddenFor(r => card.CardId)
+                    @Html.HiddenFor(r => card.CardRank)
+                    @Html.HiddenFor(r => card.CardSuit)
+                    @Html.HiddenFor(r => card.CardWeight)*@
                     <li>@card.CardRank.ToString() : @card.CardSuit.ToString()</li>
                 }
 
@@ -23,3 +36,15 @@
         </dt>
     </dl>
 </div>
+<p>
+    <div style="display: none;">@Html.EditorFor(model => model.Users)</div>
+     @using (Html.BeginForm("ContinueGame", "Game"))
+     {
+         //Html.HiddenFor(r => r.isResultComplete);
+         //for (int i = 0; i < Model.Users.Count; i++)
+         //{
+         //    Html.HiddenFor(model => Model.Users[i].UserName);
+         //}
+         <input type="submit" value="Take" id="btnSubmit" />
+     }
+</p>

@@ -44,6 +44,13 @@ namespace BlackJackApp.Controllers.Controllers
             return View("CurrentGame", result);
         }
 
+        [HttpPost]
+        public  async Task<ActionResult> ContinueGame(RoundViewModel rounds)
+        {
+            var result = await _gameService.StartNextRoundForPlayers(rounds.Users);
+            return View("CurrentGame", result);
+        }
+
         // GET: Game/Create
         public ActionResult Create()
         {
