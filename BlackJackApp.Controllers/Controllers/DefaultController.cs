@@ -1,56 +1,32 @@
-﻿using BlackJackApp.DataAccess.Interface;
-using BlackJackApp.Entities.Entities;
-using BlackJackApp.Services;
-using BlackJackApp.Services.ServiceInterfaces;
-using BlackJackApp.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace BlackJackApp.Controllers.Controllers
 {
-    public class GameController : Controller
+    public class DefaultController : Controller
     {
-        ICardRepository<Card> cardRepository = new CardRepository<Card>();
-        IGameRepository<Game> gameRepository = new GameRepository<Game>();
-        IPlayerRepository<Player> playerRepository = new PlayerRepository<Player>();
-        IRoundRepository<Round> roundRepository = new RoundRepository<Round>();
-        private IGameService<GameService> _gameService;
-
-        public GameController()
-        {
-            _gameService = new GameService(gameRepository, playerRepository, roundRepository, cardRepository);
-        }
-        // GET: Game
+        // GET: Default
         public ActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
-        public async Task<ActionResult> StartGame()
+        // GET: Default/Details/5
+        public ActionResult Details(int id)
         {
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> StartGame(GameServiceViewModel viewModel)
-        {
-            var result = await _gameService.StartGame(viewModel);
-
-            return View("CurrentGame", result);
-        }
-
-        // GET: Game/Create
+        // GET: Default/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Game/Create
+        // POST: Default/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -66,13 +42,13 @@ namespace BlackJackApp.Controllers.Controllers
             }
         }
 
-        // GET: Game/Edit/5
+        // GET: Default/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Game/Edit/5
+        // POST: Default/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -88,13 +64,13 @@ namespace BlackJackApp.Controllers.Controllers
             }
         }
 
-        // GET: Game/Delete/5
+        // GET: Default/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Game/Delete/5
+        // POST: Default/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

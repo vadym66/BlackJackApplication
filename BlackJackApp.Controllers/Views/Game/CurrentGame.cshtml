@@ -1,0 +1,25 @@
+﻿@model BlackJackApp.Services.RoundViewModel
+
+@{
+    ViewBag.Title = "CurrentGame";
+}
+
+<h2>CurrentGame</h2>
+
+<div>
+    <h4>Rounds</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @foreach (var round in Model.Users)
+            {
+                <li><b>@round.UserName:</b></li>
+                foreach (var card in round.Cards)
+                {
+                    <li>@card.CardRank.ToString() : @card.CardSuit.ToString()</li>
+                }
+
+            }
+        </dt>
+    </dl>
+</div>

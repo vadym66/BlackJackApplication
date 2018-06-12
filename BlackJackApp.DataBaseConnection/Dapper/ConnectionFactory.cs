@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web.Configuration;
 
 namespace BlackJackApp.DAL.Dapper
 {
@@ -13,7 +13,7 @@ namespace BlackJackApp.DAL.Dapper
     {
         public static DbConnection GetOpenDbConnection()
         {
-            var connection = new SqlConnection("Data Source=DESKTOP-3M9Q6SI;Initial Catalog=BlackJackDb;Integrated Security=True");
+            var connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["BlackJackDb"].ConnectionString);
             connection.Open();
 
             return connection;

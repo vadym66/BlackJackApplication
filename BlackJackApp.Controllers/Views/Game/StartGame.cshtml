@@ -1,0 +1,15 @@
+﻿@model BlackJackApp.ViewModels.GameServiceViewModel
+
+@{
+    ViewBag.Title = "StartGame";
+}
+
+<h2>StartGame</h2>
+
+@using (Html.BeginForm("StartGame", "Game"))
+    {
+        @Html.TextBoxFor(g => g.PlayerName)
+        @Html.TextBoxFor(g => g.BotQuantity)
+        <input type="submit" value="Start Game" id="btnSubmit"/>
+    }
+

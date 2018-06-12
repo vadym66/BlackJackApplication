@@ -11,7 +11,7 @@ namespace BlackJackApp.DataAccess.Interface
     {
         Task<int> Add(Game game);
         Task<IEnumerable<Game>> GetAll();
-        Task<Game> GetLast();
+        Task<IEnumerable<Game>> GetLastTen();
         Task<IEnumerable<Player>> Get(int gameId);
     }
 }

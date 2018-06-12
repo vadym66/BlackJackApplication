@@ -148,6 +148,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -195,12 +196,15 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Game\View.cshtml" />
+    <Content Include="Views\History\Details.cshtml" />
+    <Content Include="Views\History\ShowGames.cshtml" />
+    <Content Include="Views\Game\StartGame.cshtml" />
+    <Content Include="Views\Game\CurrentGame.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Game\" />
-    <Folder Include="Views\History\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -216,6 +220,14 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BlackJackApp.DAL\BlackJackApp.DataAccess.csproj">
+      <Project>{0837A9DA-C43A-432C-A85C-3E898171EB0D}</Project>
+      <Name>BlackJackApp.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BlackJackApp.Entities\BlackJackApp.Entities.csproj">
+      <Project>{0C4346C6-F247-4F53-BD37-CBE11EE7E271}</Project>
+      <Name>BlackJackApp.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BlackJackApp.Services\BlackJackApp.Services.csproj">
       <Project>{3f3921db-1c9a-45bb-a29a-d52520644311}</Project>
       <Name>BlackJackApp.Services</Name>

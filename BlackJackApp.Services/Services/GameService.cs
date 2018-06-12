@@ -21,7 +21,7 @@ namespace BlackJackApp.Services
         private IPlayerRepository<Player> _playerRepository;
         private ICardRepository<Card> _cardRepository;
         private List<Round> _rounds;
-        private const int twentyOneBlackJack = 21;
+        private const int twentyOnePoint = 21;
 
         public GameService(IGameRepository<Game> gameRepository,
                             IPlayerRepository<Player> playerRepository,
@@ -56,7 +56,7 @@ namespace BlackJackApp.Services
 
             CheckBotsForMoreThanTwentyOne(roundModel.Users);
 
-            if (humanPlayer.CardSum > twentyOneBlackJack)
+            if (humanPlayer.CardSum > twentyOnePoint)
             {
                 roundModel.isResultComplete = true;
                 humanPlayer.PlayerStatus = PlayerStatus.Lose;
@@ -64,7 +64,7 @@ namespace BlackJackApp.Services
                 await FinalPointsCount(roundModel.Users); // compare all players to dealer;
             }
 
-            if (humanPlayer.CardSum == twentyOneBlackJack)
+            if (humanPlayer.CardSum == twentyOnePoint)
             {
                 roundModel.isResultComplete = true;
                 humanPlayer.PlayerStatus = PlayerStatus.Winner;
@@ -95,7 +95,7 @@ namespace BlackJackApp.Services
             roundModel.Users = players;
 
             var humanPlayer = GetHumanPlayer(roundModel.Users);
-            if (humanPlayer.CardSum > twentyOneBlackJack)
+            if (humanPlayer.CardSum > twentyOnePoint)
             {
                 roundModel.isResultComplete = true;
                 return await FinalPointsCount(players); // compare all players to dealer;
@@ -252,7 +252,7 @@ namespace BlackJackApp.Services
         {
             if (card.Rank == CardRank.Ace)
             {
-                if (card.Weight + playerCardSum > twentyOneBlackJack)
+                if (card.Weight + playerCardSum > twentyOnePoint)
                 {
                     card.Weight = 1;
                 }
@@ -272,7 +272,7 @@ namespace BlackJackApp.Services
             foreach (var player in players)
             {
                 if (player.PlayerRole == PlayerRole.Bot &&
-                    player.CardSum > twentyOneBlackJack)
+                    player.CardSum > twentyOnePoint)
                 {
                     player.PlayerStatus = PlayerStatus.Lose;
                 }
@@ -283,7 +283,7 @@ namespace BlackJackApp.Services
         {
             foreach (var player in viewModel.Users)
             {
-                if (player.CardSum == twentyOneBlackJack)
+                if (player.CardSum == twentyOnePoint)
                 {
                     player.PlayerStatus = PlayerStatus.Winner;
                 }

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<BlackJackApp.ViewModels.UserHistoryViewModel>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>This is Game details</h2>
+
+<h2>Details</h2>
+
+<div>
+    <h4>Rounds</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @foreach (var round in Model)
+            {
+                <li><b>@round.UserName:</b></li>
+                foreach (var card in round.Cards)
+                {
+                    <li>@card.CardRank.ToString() : @card.CardSuit.ToString()</li>
+                }
+
+            }
+        </dt>
+    </dl>
+</div>

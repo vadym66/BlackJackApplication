@@ -20,6 +20,25 @@ namespace BlackJackApp.Services.Services
             _roundRepository = roundRepository;
         }
 
+        public async Task<IEnumerable<GameViewModel>> GetLastTenGames()
+        {
+            var query =  await _gameRepository.GetLastTen();
+            return await CreateGameHistoryViewModel(query);
+        }
+
+        private async Task<IEnumerable<GameViewModel>> CreateGameHistoryViewModel(IEnumerable<Game> games)
+        {
+            var listOfViewModel = new List<GameViewModel>();
+            foreach (var game in games)
+            {
+                var gameViewModel = new GameViewModel();
+                gameViewModel.GameId = game.Id;
+                listOfViewModel.Add(gameViewModel);
+            }
+
+            return listOfViewModel;
+        }
+
         public async Task<IEnumerable<Round>> GetAllRoundsFromParticularGame(int gameId)
         {
             var query = await _roundRepository.GetRounds(gameId);

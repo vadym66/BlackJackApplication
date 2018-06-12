@@ -1,0 +1,22 @@
+﻿@model IEnumerable<BlackJackApp.ViewModels.GameViewModel>
+
+@{
+    ViewBag.Title = "History";
+}
+
+<h2>Game History</h2>
+
+
+    @foreach (var game in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelGame => game.GameId)
+            </td>
+
+            <td>
+                @Html.ActionLink("History", "Details", new { id = game.GameId }) 
+            </td>
+        </tr>
+    }
+

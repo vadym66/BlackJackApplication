@@ -66,7 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dapper\ConnectionFactory.cs" />
     <Compile Include="Interfaces\ICardRepository.cs" />
     <Compile Include="Interfaces\IGameRepository.cs" />
     <Compile Include="Interfaces\IPlayerRepository.cs" />
@@ -78,6 +77,10 @@
     <Compile Include="Repositories\RoundRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BlackJackApp.DataBaseConnection\BlackJackApp.DataBaseConnection.csproj">
+      <Project>{4adab166-8918-4652-99da-2e3dfd773fdb}</Project>
+      <Name>BlackJackApp.DataBaseConnection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BlackJackApp.Entities\BlackJackApp.Entities.csproj">
       <Project>{0c4346c6-f247-4f53-bd37-cbe11ee7e271}</Project>
       <Name>BlackJackApp.Entities</Name>
@@ -90,6 +93,8 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

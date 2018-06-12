@@ -30,20 +30,20 @@ namespace BlackJackApp.Services
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
                 var sql = @"SELECT *
-                           FROM Games";
+                            FROM Games";
 
                 return await connection.QueryAsync<Game>(sql);
             }
         }
 
-        public async Task<Game> GetLast()
+        public async Task<IEnumerable<Game>> GetLastTen()
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                var sql = @"SELECT TOP 1 *      
+                var sql = @"SELECT TOP 10 *      
                             FROM Games ORDER BY Id DESC";
 
-                return await connection.QuerySingleAsync<Game>(sql);
+                return await connection.QueryAsync<Game>(sql);
             }
         }
 
