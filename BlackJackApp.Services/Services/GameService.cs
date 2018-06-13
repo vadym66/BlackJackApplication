@@ -22,6 +22,7 @@ namespace BlackJackApp.Services
         private ICardRepository<Card> _cardRepository;
         private List<Round> _rounds;
         private const int twentyOnePoint = 21;
+        private const int dealerPointBorder = 17;
 
         public GameService(IGameRepository<Game> gameRepository,
                             IPlayerRepository<Player> playerRepository,
@@ -103,7 +104,7 @@ namespace BlackJackApp.Services
             return roundModel;
         }
 
-        public async Task StartNextRoundForDealer(List<UserViewModel> players)
+        public async Task<RoundViewModel> StartNextRoundForDealer(List<UserViewModel> players)
         {
             foreach (var player in players)
             {
@@ -114,6 +115,11 @@ namespace BlackJackApp.Services
             }
 
             FinalPointsCount(players);
+
+            var roundView = new RoundViewModel();
+            roundView.Users = players;
+            return roundView;
+
         }
 
         private async Task<RoundViewModel> FinalPointsCount(List<UserViewModel> players)
@@ -239,11 +245,12 @@ namespace BlackJackApp.Services
 
             await _roundRepository.Add(round, round.GameId);
 
-            player.CardSum += card.Weight;
-
             var cardView = new CardServiceViewModel();
             cardView.CardRank = card.Rank.ToString();
             cardView.CardSuit = card.Suit.ToString();
+            cardView.CardWeight = card.Weight;
+
+            player.CardSum += cardView.CardWeight;
 
             player.Cards.Add(cardView);
         }
@@ -261,9 +268,12 @@ namespace BlackJackApp.Services
 
         private async Task CheckDealer(UserViewModel player)
         {
-            while (player.CardSum < 17)
+            if (player.CardSum < dealerPointBorder)
             {
-                await CreateNextRound(player);
+                while (player.CardSum < dealerPointBorder)
+                {
+                    await CreateNextRound(player);
+                }
             }
         }
 
@@ -332,6 +342,8 @@ namespace BlackJackApp.Services
 
                     cardViewModel.CardRank = item.Card.Rank.ToString();
                     cardViewModel.CardSuit = item.Card.Suit.ToString();
+                    cardViewModel.CardWeight = item.Card.Weight;
+
                     userModel.CardSum += item.Card.Weight;
                     userModel.PlayerId = item.PlayerId;
                     userModel.GameId = item.GameId;

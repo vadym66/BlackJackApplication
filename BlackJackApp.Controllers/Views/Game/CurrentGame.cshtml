@@ -13,38 +13,72 @@
         <dt>
             @foreach (var round in Model.Users)
             {
-                @*@Html.HiddenFor(r => round)
-                @Html.HiddenFor(r => round.UserName)
-                @Html.HiddenFor(r => round.GameId)
-                @Html.HiddenFor(r => round.PlayerId)
-                @Html.HiddenFor(r => round.RoundId)
-                @Html.HiddenFor(r => round.PlayerStatus)
-                @Html.HiddenFor(r => round.PlayerRole)
-                @Html.HiddenFor(r => round.CardSum)*@
-                <li><b>@round.UserName:</b></li>
+                <li><b>@round.UserName:  @round.CardSum.ToString()</b></li>
                 foreach (var card in round.Cards)
                 {
-                    @*@Html.HiddenFor(r => card)
-                    @Html.HiddenFor(r => card.CardId)
-                    @Html.HiddenFor(r => card.CardRank)
-                    @Html.HiddenFor(r => card.CardSuit)
-                    @Html.HiddenFor(r => card.CardWeight)*@
-                    <li>@card.CardRank.ToString() : @card.CardSuit.ToString()</li>
+                    <li>@card.CardRank : @card.CardSuit</li>
                 }
-
             }
         </dt>
     </dl>
 </div>
 <p>
-    <div style="display: none;">@Html.EditorFor(model => model.Users)</div>
-     @using (Html.BeginForm("ContinueGame", "Game"))
-     {
-         //Html.HiddenFor(r => r.isResultComplete);
-         //for (int i = 0; i < Model.Users.Count; i++)
-         //{
-         //    Html.HiddenFor(model => Model.Users[i].UserName);
-         //}
-         <input type="submit" value="Take" id="btnSubmit" />
-     }
+    @using (Html.BeginForm("ContinueGame",
+        "Game",
+        FormMethod.Post))
+    {
+        <table class="table">
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(r => Model.Users[i].UserName);
+                        @Html.HiddenFor(r => Model.Users[i].GameId);
+                        @Html.HiddenFor(r => Model.Users[i].PlayerId);
+                        @Html.HiddenFor(r => Model.Users[i].RoundId);
+                        @Html.HiddenFor(r => Model.Users[i].PlayerStatus);
+                        @Html.HiddenFor(r => Model.Users[i].PlayerRole);
+                        @Html.HiddenFor(r => Model.Users[i].CardSum);
+                        @for (int j = 0; j < Model.Users[i].Cards.Count; j++)
+                        {
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardRank);
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardSuit);
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardWeight);
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        <input type="submit" value="Take" id="btnSubmit" />
+    }
+
+    @using (Html.BeginForm("DealerTakesCard",
+        "Game",
+        FormMethod.Post))
+    {
+        <table class="table">
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(r => Model.Users[i].UserName);
+                        @Html.HiddenFor(r => Model.Users[i].GameId);
+                        @Html.HiddenFor(r => Model.Users[i].PlayerId);
+                        @Html.HiddenFor(r => Model.Users[i].RoundId);
+                        @Html.HiddenFor(r => Model.Users[i].PlayerStatus);
+                        @Html.HiddenFor(r => Model.Users[i].PlayerRole);
+                        @Html.HiddenFor(r => Model.Users[i].CardSum);
+                        @for (int j = 0; j < Model.Users[i].Cards.Count; j++)
+                        {
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardRank);
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardSuit);
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardWeight);
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        <input type="submit" value="enough" id="btnSubmit" />
+    }
+    }
 </p>

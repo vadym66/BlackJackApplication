@@ -20,7 +20,8 @@ namespace BlackJackApp.Services
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
-                return await connection.QueryFirstAsync<Card>("SELECT TOP 1 * FROM Cards ORDER BY newid()");
+                return await connection.QueryFirstAsync<Card>(@"SELECT TOP 1 * 
+                                                                FROM Cards ORDER BY newid()");
             }
         }
     }

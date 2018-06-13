@@ -12,5 +12,6 @@ namespace BlackJackApp.Services.ServiceInterfaces
     {
         Task<RoundViewModel> StartGame(GameServiceViewModel viewFromUI);
         Task<RoundViewModel> StartNextRoundForPlayers(List<UserViewModel> players);
+        Task<RoundViewModel> StartNextRoundForDealer(List<UserViewModel> players);
     }
 }

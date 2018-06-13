@@ -35,12 +35,25 @@ namespace BlackJackApp.Services
             }
         }
 
+        public async Task<Player> GetHuman(string name)
+        {
+            using (var connection = ConnectionFactory.GetOpenDbConnection())
+            {
+                var sql = @"SELECT *
+                            FROM Players
+                            WHERE Players.Name = @name";
+
+                return await connection.QuerySingleAsync<Player>(sql);
+            }
+        }
+
         public async Task<IEnumerable<Player>> GetBots(int botNumber)
         {
             using (var connection = ConnectionFactory.GetOpenDbConnection())
             {
                 var sql = @"SELECT TOP (@BotNumber) * 
-                            FROM Players WHERE Players.Id  BETWEEN 2 AND 5";
+                            FROM Players 
+                            WHERE Players.Id BETWEEN 2 AND 5";
 
                 return await connection.QueryAsync<Player>(sql, new { BotNumber = botNumber });
             }

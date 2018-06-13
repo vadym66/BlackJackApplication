@@ -13,6 +13,8 @@ namespace BlackJackApp.Entities.Entities
 
         public string Name { get; set; }
 
-        public virtual EntityPlayerRole PlayerRole { get; set; }
+        public EntityPlayerRole PlayerRole { get; set; }
+
+        public EntityGameStatus GameStatus { get; set; }
     }
 }

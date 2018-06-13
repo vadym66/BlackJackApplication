@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJackApp.Entities", "Bl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJackApp.Services", "BlackJackApp.Services\BlackJackApp.Services.csproj", "{3F3921DB-1C9A-45BB-A29A-D52520644311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJackApp.Test", "BlackJackApp.Test\BlackJackApp.Test.csproj", "{1FDFC11E-BFE9-4FCA-A7BB-CDDD86625633}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJackApp.ViewModels", "BlackJackApp.ViewModels\BlackJackApp.ViewModels.csproj", "{C0101599-9B70-4398-B8ED-D37FEBAC0199}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackJackApp.Controllers", "BlackJackApp.Controllers\BlackJackApp.Controllers.csproj", "{B97290B0-7D15-42EA-99B5-E7B030FD469D}"
@@ -35,10 +33,6 @@ Global
 		{3F3921DB-1C9A-45BB-A29A-D52520644311}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F3921DB-1C9A-45BB-A29A-D52520644311}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F3921DB-1C9A-45BB-A29A-D52520644311}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FDFC11E-BFE9-4FCA-A7BB-CDDD86625633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FDFC11E-BFE9-4FCA-A7BB-CDDD86625633}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FDFC11E-BFE9-4FCA-A7BB-CDDD86625633}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FDFC11E-BFE9-4FCA-A7BB-CDDD86625633}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C0101599-9B70-4398-B8ED-D37FEBAC0199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C0101599-9B70-4398-B8ED-D37FEBAC0199}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0101599-9B70-4398-B8ED-D37FEBAC0199}.Release|Any CPU.ActiveCfg = Release|Any CPU
