@@ -213,7 +213,7 @@
     <Content Include="Views\History\ShowGames.cshtml" />
     <Content Include="Views\Game\StartGame.cshtml" />
     <Content Include="Views\Game\CurrentGame.cshtml" />
-    <Content Include="Views\Game\GameFinnished.cshtml" />
+    <Content Include="Views\Game\StartNextRoundForDealer.cshtml" />
     <Content Include="Views\Game\StartNextRoundForPlayers.cshtml" />
   </ItemGroup>
   <ItemGroup>

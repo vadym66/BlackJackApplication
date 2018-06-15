@@ -88,11 +88,11 @@ namespace BlackJackApp.Services
                 {
                     await CreateNextRound(player);
                 }
-                //if (player.PlayerRole == PlayerRole.Dealer)
-                //{
-                //    List<Round> rounds = await _roundRepository.GetRoundsForPlayer(player.GameId, player.UserName);
-                //    AddCardViewModelToPlayer(rounds, player);
-                //}
+                if (player.PlayerRole == PlayerRole.Dealer)
+                {
+                    List<Round> rounds = await _roundRepository.GetRoundsForPlayer(player.GameId, player.UserName);
+                    AddCardViewModelToPlayer(rounds, player);
+                }
             }
             var roundModel = new RoundViewModel();
             roundModel.Users = players;
@@ -216,9 +216,11 @@ namespace BlackJackApp.Services
 
         private async Task CreateNextRound(UserViewModel player)
         {
-            List<Round> rounds = await _roundRepository.GetRoundsForPlayer(player.GameId, player.UserName);
-
-            AddCardViewModelToPlayer(rounds, player);
+            if (player.PlayerRole != PlayerRole.Dealer)
+            {
+                List<Round> rounds = await _roundRepository.GetRoundsForPlayer(player.GameId, player.UserName);
+                AddCardViewModelToPlayer(rounds, player);
+            }
 
             var round = new Round();
             var card = new Card();

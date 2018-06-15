@@ -21,7 +21,6 @@
                         @Html.HiddenFor(r => Model.Users[i].RoundId)
                         @Html.HiddenFor(r => Model.Users[i].PlayerStatus)
                         @Html.HiddenFor(r => Model.Users[i].PlayerRole)
-                       
                     </td>
                 </tr>
             }
@@ -32,6 +31,7 @@
 <div>
     @using (Ajax.BeginForm("StartNextRoundForDealer", "Game", new AjaxOptions
     {
+
         UpdateTargetId = "refTable"
     }))
     {

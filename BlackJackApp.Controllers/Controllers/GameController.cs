@@ -42,7 +42,6 @@ namespace BlackJackApp.Controllers.Controllers
             //{
             //    return View("GameFinnished", result);
             //}
-
             return View(result);
         }
 
@@ -65,7 +64,7 @@ namespace BlackJackApp.Controllers.Controllers
             var result = await _gameService.StartNextRoundForDealer(rounds.Users);
             ModelState.Clear();
             
-            return View("GameFinnished", result);
+            return View(result);
         }
     }
 }
