@@ -1,0 +1,16 @@
+﻿@model BlackJackApp.Services.RoundViewModel
+<div id="refTable">
+    <table class="tblRound">
+        @foreach (var round in Model.Users)
+        {
+            <tr><td>Name: @round.UserName  CardSum: @round.CardSum.ToString() Status: @round.PlayerStatus</td></tr>
+            foreach (var card in round.Cards)
+            {
+                <tr><td>@card.CardRank : @card.CardSuit</td></tr>
+            }
+        }
+    </table>
+</div>
+
+
+

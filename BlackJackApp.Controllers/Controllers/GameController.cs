@@ -1,4 +1,6 @@
-﻿using BlackJackApp.DataAccess.Interface;
+﻿using BlackJackApp.DAL.Interfaces;
+using BlackJackApp.DAL.Repositories;
+using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
 using BlackJackApp.Services;
 using BlackJackApp.Services.ServiceInterfaces;
@@ -18,11 +20,12 @@ namespace BlackJackApp.Controllers.Controllers
         IGameRepository<Game> gameRepository = new GameRepository<Game>();
         IPlayerRepository<Player> playerRepository = new PlayerRepository<Player>();
         IRoundRepository<Round> roundRepository = new RoundRepository<Round>();
+        IPlayersGameRepository<Player> playerGamesRepository = new PlayersGameRepository();
         private IGameService<GameService> _gameService;
 
         public GameController()
         {
-            _gameService = new GameService(gameRepository, playerRepository, roundRepository, cardRepository);
+            _gameService = new GameService(gameRepository, playerRepository, roundRepository, cardRepository, playerGamesRepository);
         }
 
         [HttpGet]
@@ -32,27 +35,37 @@ namespace BlackJackApp.Controllers.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> StartGame(GameServiceViewModel viewModel)
+        public async Task<ActionResult> CurrentGame(GameServiceViewModel viewModel)
         {
             var result = await _gameService.StartGame(viewModel);
+            //if (result.isResultComplete)
+            //{
+            //    return View("GameFinnished", result);
+            //}
 
-            return View("CurrentGame", result);
+            return View(result);
         }
 
         [HttpPost]
-        public  async Task<ActionResult> ContinueGame(RoundViewModel rounds)
+        public  async Task<ActionResult> StartNextRoundForPlayers(RoundViewModel rounds)
         {
             var result = await _gameService.StartNextRoundForPlayers(rounds.Users);
             ModelState.Clear();
-            return View("CurrentGame", result);
+            //if (result.isResultComplete)
+            //{
+            //    return View("GameFinnished", result);
+            //}
+
+            return PartialView(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> DealerTakesCard(RoundViewModel rounds)
+        public async Task<ActionResult> StartNextRoundForDealer(RoundViewModel rounds)
         {
             var result = await _gameService.StartNextRoundForDealer(rounds.Users);
-            ModelState.Clear(); ////// !!!!!!!!!
-            return View("CurrentGame", result);
+            ModelState.Clear();
+            
+            return View("GameFinnished", result);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace BlackJackApp.Services
                             FROM Players
                             WHERE Players.Name = @name";
 
-                return await connection.QuerySingleAsync<Player>(sql);
+                return await connection.QuerySingleAsync<Player>(sql, new { name = name });
             }
         }
 

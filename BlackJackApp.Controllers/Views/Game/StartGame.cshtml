@@ -1,12 +1,8 @@
 ﻿@model BlackJackApp.ViewModels.GameServiceViewModel
 
-@{
-    ViewBag.Title = "StartGame";
-}
-
 <h2>StartGame</h2>
 
-@using (Html.BeginForm("StartGame", "Game"))
+@using (Html.BeginForm("CurrentGame", "Game"))
     {
         @Html.TextBoxFor(g => g.PlayerName)
         @Html.TextBoxFor(g => g.BotQuantity)

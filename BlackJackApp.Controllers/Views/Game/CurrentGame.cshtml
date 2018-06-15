@@ -1,78 +1,57 @@
 ﻿@model BlackJackApp.Services.RoundViewModel
-
-@{
-    ViewBag.Title = "CurrentGame";
-}
-
 <h2>CurrentGame</h2>
+<div>
+    @Html.Partial("StartNextRoundForPlayers")
+</div>
 
 <div>
-    <h4>Rounds</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @foreach (var round in Model.Users)
-            {
-                <li><b>@round.UserName:  @round.CardSum.ToString()</b></li>
-                foreach (var card in round.Cards)
-                {
-                    <li>@card.CardRank : @card.CardSuit</li>
-                }
-            }
-        </dt>
-    </dl>
-</div>
-<p>
-    @using (Html.BeginForm("ContinueGame",
-        "Game",
-        FormMethod.Post))
+    @using (Ajax.BeginForm("StartNextRoundForPlayers", "Game", new AjaxOptions
+    {
+        UpdateTargetId = "refTable"
+    }))
     {
         <table class="table">
             @for (int i = 0; i < Model.Users.Count; i++)
             {
                 <tr>
                     <td>
-                        @Html.HiddenFor(r => Model.Users[i].UserName);
-                        @Html.HiddenFor(r => Model.Users[i].GameId);
-                        @Html.HiddenFor(r => Model.Users[i].PlayerId);
-                        @Html.HiddenFor(r => Model.Users[i].RoundId);
-                        @Html.HiddenFor(r => Model.Users[i].PlayerStatus);
-                        @Html.HiddenFor(r => Model.Users[i].PlayerRole);
-                        @Html.HiddenFor(r => Model.Users[i].CardSum);
-                        @for (int j = 0; j < Model.Users[i].Cards.Count; j++)
-                        {
-                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardRank);
-                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardSuit);
-                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardWeight);
-                        }
+                        @Html.HiddenFor(r => Model.Users[i].UserName)
+                        @Html.HiddenFor(r => Model.Users[i].GameId)
+                        @Html.HiddenFor(r => Model.Users[i].PlayerId)
+                        @Html.HiddenFor(r => Model.Users[i].RoundId)
+                        @Html.HiddenFor(r => Model.Users[i].PlayerStatus)
+                        @Html.HiddenFor(r => Model.Users[i].PlayerRole)
+                       
                     </td>
                 </tr>
             }
         </table>
         <input type="submit" value="Take" id="btnSubmit" />
     }
-
-    @using (Html.BeginForm("DealerTakesCard",
-        "Game",
-        FormMethod.Post))
+</div>
+<div>
+    @using (Ajax.BeginForm("StartNextRoundForDealer", "Game", new AjaxOptions
+    {
+        UpdateTargetId = "refTable"
+    }))
     {
         <table class="table">
             @for (int i = 0; i < Model.Users.Count; i++)
             {
                 <tr>
                     <td>
-                        @Html.HiddenFor(r => Model.Users[i].UserName);
-                        @Html.HiddenFor(r => Model.Users[i].GameId);
-                        @Html.HiddenFor(r => Model.Users[i].PlayerId);
-                        @Html.HiddenFor(r => Model.Users[i].RoundId);
-                        @Html.HiddenFor(r => Model.Users[i].PlayerStatus);
-                        @Html.HiddenFor(r => Model.Users[i].PlayerRole);
-                        @Html.HiddenFor(r => Model.Users[i].CardSum);
+                        @Html.HiddenFor(r => Model.Users[i].UserName)
+                        @Html.HiddenFor(r => Model.Users[i].GameId)
+                        @Html.HiddenFor(r => Model.Users[i].PlayerId)
+                        @Html.HiddenFor(r => Model.Users[i].RoundId)
+                        @Html.HiddenFor(r => Model.Users[i].PlayerStatus)
+                        @Html.HiddenFor(r => Model.Users[i].PlayerRole)
+                        @Html.HiddenFor(r => Model.Users[i].CardSum)
                         @for (int j = 0; j < Model.Users[i].Cards.Count; j++)
                         {
-                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardRank);
-                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardSuit);
-                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardWeight);
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardRank)
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardSuit)
+                            @Html.HiddenFor(r => Model.Users[i].Cards[j].CardWeight)
                         }
                     </td>
                 </tr>
@@ -80,5 +59,7 @@
         </table>
         <input type="submit" value="enough" id="btnSubmit" />
     }
-    }
-</p>
+</div>
+
+
+

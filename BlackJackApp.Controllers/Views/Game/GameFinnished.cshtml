@@ -1,0 +1,38 @@
+﻿@model BlackJackApp.Services.RoundViewModel
+<h2>Game Finnished</h2>
+<table class="tblRound">
+    @foreach (var round in Model.Users)
+    {
+        <tr><td>Name: @round.UserName  CardSum: @round.CardSum.ToString() Status: @round.PlayerStatus</td></tr>
+        foreach (var card in round.Cards)
+        {
+            <tr><td>@card.CardRank : @card.CardSuit</td></tr>
+        }
+    }
+</table>
+
+
+@using (Html.BeginForm("ShowGames",
+        "History",
+        FormMethod.Post))
+{
+    <input type="submit" value="Go to history" id="btnSubmit" />
+}
+
+@using (Html.BeginForm("StartGame",
+        "Game",
+        FormMethod.Post))
+{
+    <input type="submit" value="Start new game" id="btnSubmit" />
+}
+
+@using (Html.BeginForm("Index",
+        "Home",
+        FormMethod.Post))
+{
+    <input type="submit" value="Finnish" id="btnSubmit" />
+}
+
+
+
+

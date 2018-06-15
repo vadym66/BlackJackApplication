@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.DAL.Interfaces
 {
-    public interface IPlayersGameRepository
+    public interface IPlayersGameRepository<T> where T : class
     {
-        Task UpdatePlayerStatus(Player player);
+        Task AddPlayerStatus(Player player, string status);
+        Task AddPlayer(Player player, int gameId);
     }
 }
