@@ -14,16 +14,11 @@ namespace BlackJackApp.Controllers.Controllers
 {
     public class HistoryController : Controller
     {
-        ICardRepository<Card> cardRepository = new CardRepository<Card>();
-        IGameRepository<Game> gameRepository = new GameRepository<Game>();
-        IPlayerRepository<Player> playerRepository = new PlayerRepository<Player>();
-        IRoundRepository<Round> roundRepository = new RoundRepository<Round>();
+        IHistoryService _historyService;
 
-        HistoryService _historyService;
-
-        public HistoryController()
+        public HistoryController(IHistoryService historyService)
         {
-            _historyService = new HistoryService(gameRepository, roundRepository);
+            _historyService = historyService;
         }
 
         public async Task<ActionResult> ShowGames()

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Services.ServiceInterfaces
 {
-    public interface IGameService<T> where T : class
+    public interface IGameService
     {
         Task<RoundViewModel> StartGame(GameServiceViewModel viewFromUI);
         Task<RoundViewModel> StartNextRoundForPlayers(List<UserViewModel> players);

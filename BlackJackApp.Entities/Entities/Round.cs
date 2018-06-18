@@ -16,5 +16,7 @@ namespace BlackJackApp.Entities.Entities
         public virtual Card Card { get; set; }
 
         public virtual Player Player { get; set; }
+
+        public virtual RoundState State { get; set; }
     }
 }

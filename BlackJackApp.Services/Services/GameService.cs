@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Services
 {
-    public class GameService : IGameService<GameService>
+    public class GameService : IGameService
     {
         private IGameRepository<Game> _gameRepository;
         private IRoundRepository<Round> _roundRepository;
@@ -154,11 +154,16 @@ namespace BlackJackApp.Services
 
         private async Task CreateHuman(string name, int gameId)
         {
-            Player player = new Player { Name = name };
-            player.PlayerRole = EntityPlayerRole.Human;
-            player.Id = await _playerRepository.Add(player, gameId);
+            Player player;
+            player = await _playerRepository.GetHuman(name);
 
-            await AddPlayerToCurrentGame(player, gameId);
+            if (player == null)
+            {
+                player = new Player { Name = name };
+                player.PlayerRole = EntityPlayerRole.Human;
+                player.Id = await _playerRepository.Add(player, gameId);
+            }
+
             await CreateFirstRound(player, gameId);
         }
 
@@ -170,8 +175,6 @@ namespace BlackJackApp.Services
 
             foreach (var player in players)
             {
-                await AddPlayerToCurrentGame(player, gameId);
-                player.PlayerRole = EntityPlayerRole.Bot;
                 await CreateFirstRound(player, gameId);
             }
         }

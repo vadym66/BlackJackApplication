@@ -12,5 +12,6 @@ namespace BlackJackApp.Services.ServiceInterfaces
     {
         Task<IEnumerable<Round>> GetAllRoundsFromParticularGame(int gameId);
         List<UserHistoryViewModel> CreateUserHistoryVM(IEnumerable<Round> rounds);
+        Task<IEnumerable<GameViewModel>> GetLastTenGames();
     }
 }

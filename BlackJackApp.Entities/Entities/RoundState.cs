@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Entities.Entities
 {
-    public class Player
+    public class RoundState
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public int CardSum { get; set; }
 
-        public EntityPlayerRole PlayerRole { get; set; }
-
-        public EntityPlayerStatus PlayerStatus { get; set; }
+        public EntityPlayerStatus Status { get; set; }
     }
 }

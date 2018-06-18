@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.DAL.Repositories
 {
-    public class PlayersGameRepository : IPlayersGameRepository<Player>
+    public class PlayersGameRepository<T> : IPlayersGameRepository<Player>
     {
         public async Task AddPlayer(Player player, int gameId)
         {

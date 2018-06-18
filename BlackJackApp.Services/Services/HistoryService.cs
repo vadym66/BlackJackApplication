@@ -1,5 +1,6 @@
 ﻿using BlackJackApp.DataAccess.Interface;
 using BlackJackApp.Entities.Entities;
+using BlackJackApp.Services.ServiceInterfaces;
 using BlackJackApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BlackJackApp.Services.Services
 {
-    public class HistoryService
+    public class HistoryService : IHistoryService
     {
         private IGameRepository<Game> _gameRepository;
         private IRoundRepository<Round> _roundRepository;

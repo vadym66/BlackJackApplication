@@ -15,17 +15,12 @@ using System.Web.Mvc;
 namespace BlackJackApp.Controllers.Controllers
 {
     public class GameController : Controller
-    {
-        ICardRepository<Card> cardRepository = new CardRepository<Card>();
-        IGameRepository<Game> gameRepository = new GameRepository<Game>();
-        IPlayerRepository<Player> playerRepository = new PlayerRepository<Player>();
-        IRoundRepository<Round> roundRepository = new RoundRepository<Round>();
-        IPlayersGameRepository<Player> playerGamesRepository = new PlayersGameRepository();
-        private IGameService<GameService> _gameService;
+    {        
+        private IGameService _gameService;
 
-        public GameController()
+        public GameController(IGameService gameService)
         {
-            _gameService = new GameService(gameRepository, playerRepository, roundRepository, cardRepository, playerGamesRepository);
+            _gameService = gameService;
         }
 
         [HttpGet]

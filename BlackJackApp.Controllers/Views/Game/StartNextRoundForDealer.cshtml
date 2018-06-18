@@ -3,10 +3,13 @@
 <table class="tblRound">
     @foreach (var round in Model.Users)
     {
-        <tr><td>Name: @round.UserName  CardSum: @round.CardSum.ToString() Status: @round.PlayerStatus</td></tr>
-        foreach (var card in round.Cards)
+        @if (round.PlayerRole == BlackJackApp.ViewModels.Enums.PlayerRole.Dealer)
         {
-            <tr><td>@card.CardRank : @card.CardSuit</td></tr>
+            <tr><td>Name: @round.UserName  CardSum: @round.CardSum.ToString() Status: @round.PlayerStatus</td></tr>
+            foreach (var card in round.Cards)
+            {
+                <tr><td>@card.CardRank : @card.CardSuit</td></tr>
+            }
         }
     }
 </table>
